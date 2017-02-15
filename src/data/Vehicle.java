@@ -8,7 +8,7 @@ public class Vehicle {
 	private int costPerDistance;
 	private int id;
 	
-	public public Vehicle(int capacity,int maxDistance,int costPerVehicle,int costPerDay,int costPerDistance,int id ) {
+	public Vehicle(int capacity, int maxDistance, int costPerVehicle, int costPerDay, int costPerDistance, int id) {
 		this.capacity=capacity;
 		this.maxDistance=maxDistance;
 		this.costPerVehicle=costPerVehicle;
