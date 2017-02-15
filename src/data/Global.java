@@ -23,9 +23,11 @@ public class Global {
 		}
 		return distance;
 	}
+
 	
 	public final int getDays() {
 		return days;
 	}
+
 
 }
