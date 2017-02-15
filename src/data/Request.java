@@ -20,31 +20,31 @@ public class Request {
 		this.amountOfTools = amountOfTools;
 	}
 	
-	public Location getLocation() {
+	public final Location getLocation() {
 		return location;
 	}
 
-	public int getStartTime() {
+	public final int getStartTime() {
 		return startTime;
 	}
 
-	public int getEndTime() {
+	public final int getEndTime() {
 		return endTime;
 	}
 	
-	public Tool getTool() {
+	public final Tool getTool() {
 		return tool;
 	}
 
-	public int getUsageTime() {
+	public final int getUsageTime() {
 		return usageTime;
 	}
 
-	public int getAmountOfTools() {
+	public final int getAmountOfTools() {
 		return amountOfTools;
 	}
 
-	public int getId() {
+	public final  int getId() {
 		return id;
 	}
 	

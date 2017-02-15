@@ -12,15 +12,15 @@ public class Tool {
 		
 	}
 
-	public int getSize() {
+	public final int getSize() {
 		return size;
 	}
 
-	public int getCost() {
+	public final int getCost() {
 		return cost;
 	}
 
-	public int getId() {
+	public final int getId() {
 		return id;
 	}
 

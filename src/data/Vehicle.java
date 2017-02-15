@@ -19,27 +19,27 @@ public class Vehicle {
 	
 	}
 
-	public int getCapacity() {
+	public final int getCapacity() {
 		return capacity;
 	}
 
-	public int getMaxDistance() {
+	public final int getMaxDistance() {
 		return maxDistance;
 	}
 
-	public int getCostPerVehicle() {
+	public final int getCostPerVehicle() {
 		return costPerVehicle;
 	}
 
-	public int getCostPerDay() {
+	public final int getCostPerDay() {
 		return costPerDay;
 	}
 
-	public int getCostPerDistance() {
+	public final int getCostPerDistance() {
 		return costPerDistance;
 	}
 
-	public int getId() {
+	public final int getId() {
 		return id;
 	} 
 }

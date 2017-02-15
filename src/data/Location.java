@@ -13,15 +13,15 @@ public class Location {
 		
 	}
 	
-	public int getId() {
+	public final int getId() {
 		return id;
 	}
 
-	public int getX() {
+	public final int getX() {
 		return x;
 	}
 
-	public int getY() {
+	public final int getY() {
 		return y;
 	}
 

@@ -14,11 +14,11 @@ public class Depot {
 					
 	}
 
-	public Location getLocation() {
+	public final Location getLocation() {
 		return location;
 	}
 
-	public HashMap<Tool, Integer> getToolAvailable() {
+	public final HashMap<Tool, Integer> getToolAvailable() {
 		return toolAvailable;
 	}
 }
