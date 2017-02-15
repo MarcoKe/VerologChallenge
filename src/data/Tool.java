@@ -12,4 +12,16 @@ public class Tool {
 		
 	}
 
+	public int getSize() {
+		return size;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public int getId() {
+		return id;
+	}
+
 }
