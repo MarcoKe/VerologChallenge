@@ -4,8 +4,12 @@ public class Global {
 	
 	private int days;
 	private int[][] distanceMatrix;
+	private String dataSet;
+	private String name;
 
-	public Global(int days, int[][] distanceMatrix) {
+	public Global(String dataSet, String name, int days, int[][] distanceMatrix) {
+		this.dataSet = dataSet;
+		this.name = name;
 		this.days = days;
 		this.distanceMatrix = distanceMatrix;
 	}
@@ -27,6 +31,14 @@ public class Global {
 	
 	public final int getDays() {
 		return days;
+	}
+
+	public final String getDataSet() {
+		return dataSet;
+	}
+
+	public final String getName() {
+		return name;
 	}
 
 

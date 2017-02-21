@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,6 +11,7 @@ import data.Location;
 import data.Request;
 import data.Tool;
 import data.Vehicle;
+import io.Reader;
 
 public class Main {
 	public static void main(String[] args) {
@@ -45,5 +47,9 @@ public class Main {
 		*/
 		
 		System.out.println("Hello World");
+		Reader r = new Reader();
+		File f = new File("testInstance.txt");
+		DataContoller data = r.readFile(f);
+		
 	}
 }
