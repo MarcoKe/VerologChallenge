@@ -1,0 +1,1333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instance number_of_days="5">
+	<info>
+		<dataset>All time best instance set VeRoLog competition</dataset>
+		<name>vehicle days over tools over vehicles over distance with 100 requests over 5 days</name>
+	</info>
+	<network>
+		<nodes>
+			<node id="0" type="0">
+				<cx>3917</cx>
+				<cy>6819</cy>
+			</node>
+			<node id="1" type="1">
+				<cx>8922</cx>
+				<cy>6183</cy>
+			</node>
+			<node id="2" type="1">
+				<cx>7726</cx>
+				<cy>6228</cy>
+			</node>
+			<node id="3" type="1">
+				<cx>7895</cx>
+				<cy>6301</cy>
+			</node>
+			<node id="4" type="1">
+				<cx>8385</cx>
+				<cy>6345</cy>
+			</node>
+			<node id="5" type="1">
+				<cx>8496</cx>
+				<cy>6446</cy>
+			</node>
+			<node id="6" type="1">
+				<cx>4353</cx>
+				<cy>6540</cy>
+			</node>
+			<node id="7" type="1">
+				<cx>7666</cx>
+				<cy>6614</cy>
+			</node>
+			<node id="8" type="1">
+				<cx>4236</cx>
+				<cy>6223</cy>
+			</node>
+			<node id="9" type="1">
+				<cx>7462</cx>
+				<cy>6948</cy>
+			</node>
+			<node id="10" type="1">
+				<cx>8204</cx>
+				<cy>4268</cy>
+			</node>
+			<node id="11" type="1">
+				<cx>4598</cx>
+				<cy>7130</cy>
+			</node>
+			<node id="12" type="1">
+				<cx>4086</cx>
+				<cy>7143</cy>
+			</node>
+			<node id="13" type="1">
+				<cx>7170</cx>
+				<cy>7971</cy>
+			</node>
+			<node id="14" type="1">
+				<cx>8549</cx>
+				<cy>7628</cy>
+			</node>
+			<node id="15" type="1">
+				<cx>7477</cx>
+				<cy>7966</cy>
+			</node>
+			<node id="16" type="1">
+				<cx>6271</cx>
+				<cy>7981</cy>
+			</node>
+			<node id="17" type="1">
+				<cx>7521</cx>
+				<cy>8068</cy>
+			</node>
+			<node id="18" type="1">
+				<cx>6436</cx>
+				<cy>8144</cy>
+			</node>
+			<node id="19" type="1">
+				<cx>7561</cx>
+				<cy>8156</cy>
+			</node>
+			<node id="20" type="1">
+				<cx>5861</cx>
+				<cy>8168</cy>
+			</node>
+			<node id="21" type="1">
+				<cx>5902</cx>
+				<cy>8302</cy>
+			</node>
+			<node id="22" type="1">
+				<cx>5470</cx>
+				<cy>8452</cy>
+			</node>
+			<node id="23" type="1">
+				<cx>7714</cx>
+				<cy>8518</cy>
+			</node>
+			<node id="24" type="1">
+				<cx>5361</cx>
+				<cy>8593</cy>
+			</node>
+			<node id="25" type="1">
+				<cx>3770</cx>
+				<cy>8634</cy>
+			</node>
+			<node id="26" type="1">
+				<cx>3931</cx>
+				<cy>4414</cy>
+			</node>
+			<node id="27" type="1">
+				<cx>6296</cx>
+				<cy>8682</cy>
+			</node>
+			<node id="28" type="1">
+				<cx>7381</cx>
+				<cy>8794</cy>
+			</node>
+			<node id="29" type="1">
+				<cx>5861</cx>
+				<cy>8851</cy>
+			</node>
+			<node id="30" type="1">
+				<cx>8480</cx>
+				<cy>8903</cy>
+			</node>
+			<node id="31" type="1">
+				<cx>7308</cx>
+				<cy>8962</cy>
+			</node>
+			<node id="32" type="1">
+				<cx>7326</cx>
+				<cy>9246</cy>
+			</node>
+			<node id="33" type="1">
+				<cx>8037</cx>
+				<cy>9361</cy>
+			</node>
+			<node id="34" type="1">
+				<cx>3451</cx>
+				<cy>4833</cy>
+			</node>
+			<node id="35" type="1">
+				<cx>8770</cx>
+				<cy>6891</cy>
+			</node>
+			<node id="36" type="1">
+				<cx>8134</cx>
+				<cy>7016</cy>
+			</node>
+			<node id="37" type="1">
+				<cx>2717</cx>
+				<cy>5083</cy>
+			</node>
+			<node id="38" type="1">
+				<cx>7098</cx>
+				<cy>7247</cy>
+			</node>
+			<node id="39" type="1">
+				<cx>6405</cx>
+				<cy>1175</cy>
+			</node>
+			<node id="40" type="1">
+				<cx>8767</cx>
+				<cy>9381</cy>
+			</node>
+			<node id="41" type="1">
+				<cx>5138</cx>
+				<cy>4182</cy>
+			</node>
+			<node id="42" type="1">
+				<cx>2943</cx>
+				<cy>2779</cy>
+			</node>
+			<node id="43" type="1">
+				<cx>296</cx>
+				<cy>1834</cy>
+			</node>
+			<node id="44" type="1">
+				<cx>7737</cx>
+				<cy>7419</cy>
+			</node>
+			<node id="45" type="1">
+				<cx>7789</cx>
+				<cy>5478</cy>
+			</node>
+			<node id="46" type="1">
+				<cx>5400</cx>
+				<cy>2244</cy>
+			</node>
+			<node id="47" type="1">
+				<cx>5294</cx>
+				<cy>2264</cy>
+			</node>
+			<node id="48" type="1">
+				<cx>4809</cx>
+				<cy>2300</cy>
+			</node>
+			<node id="49" type="1">
+				<cx>4127</cx>
+				<cy>2483</cy>
+			</node>
+			<node id="50" type="1">
+				<cx>6663</cx>
+				<cy>2567</cy>
+			</node>
+			<node id="51" type="1">
+				<cx>6168</cx>
+				<cy>7564</cy>
+			</node>
+			<node id="52" type="1">
+				<cx>4660</cx>
+				<cy>2812</cy>
+			</node>
+			<node id="53" type="1">
+				<cx>4940</cx>
+				<cy>3575</cy>
+			</node>
+			<node id="54" type="1">
+				<cx>5728</cx>
+				<cy>2846</cy>
+			</node>
+			<node id="55" type="1">
+				<cx>4139</cx>
+				<cy>7619</cy>
+			</node>
+			<node id="56" type="1">
+				<cx>4098</cx>
+				<cy>3096</cy>
+			</node>
+			<node id="57" type="1">
+				<cx>5626</cx>
+				<cy>3264</cy>
+			</node>
+			<node id="58" type="1">
+				<cx>6355</cx>
+				<cy>3469</cy>
+			</node>
+			<node id="59" type="1">
+				<cx>4265</cx>
+				<cy>3584</cy>
+			</node>
+			<node id="60" type="1">
+				<cx>6866</cx>
+				<cy>5709</cy>
+			</node>
+			<node id="61" type="1">
+				<cx>5118</cx>
+				<cy>3663</cy>
+			</node>
+			<node id="62" type="1">
+				<cx>8338</cx>
+				<cy>6012</cy>
+			</node>
+			<node id="63" type="1">
+				<cx>8028</cx>
+				<cy>5449</cy>
+			</node>
+			<node id="64" type="1">
+				<cx>5171</cx>
+				<cy>3776</cy>
+			</node>
+			<node id="65" type="1">
+				<cx>1739</cx>
+				<cy>3785</cy>
+			</node>
+			<node id="66" type="1">
+				<cx>6169</cx>
+				<cy>3977</cy>
+			</node>
+			<node id="67" type="1">
+				<cx>5777</cx>
+				<cy>8268</cy>
+			</node>
+			<node id="68" type="1">
+				<cx>4962</cx>
+				<cy>4265</cy>
+			</node>
+			<node id="69" type="1">
+				<cx>4095</cx>
+				<cy>4323</cy>
+			</node>
+			<node id="70" type="1">
+				<cx>5009</cx>
+				<cy>4339</cy>
+			</node>
+			<node id="71" type="1">
+				<cx>3783</cx>
+				<cy>4463</cy>
+			</node>
+			<node id="72" type="1">
+				<cx>4139</cx>
+				<cy>4471</cy>
+			</node>
+			<node id="73" type="1">
+				<cx>8296</cx>
+				<cy>4494</cy>
+			</node>
+			<node id="74" type="1">
+				<cx>7928</cx>
+				<cy>4553</cy>
+			</node>
+			<node id="75" type="1">
+				<cx>7721</cx>
+				<cy>4581</cy>
+			</node>
+			<node id="76" type="1">
+				<cx>3849</cx>
+				<cy>4752</cy>
+			</node>
+			<node id="77" type="1">
+				<cx>3997</cx>
+				<cy>4754</cy>
+			</node>
+			<node id="78" type="1">
+				<cx>4826</cx>
+				<cy>4779</cy>
+			</node>
+			<node id="79" type="1">
+				<cx>4861</cx>
+				<cy>4814</cy>
+			</node>
+			<node id="80" type="1">
+				<cx>7897</cx>
+				<cy>4856</cy>
+			</node>
+			<node id="81" type="1">
+				<cx>3832</cx>
+				<cy>4865</cy>
+			</node>
+			<node id="82" type="1">
+				<cx>6987</cx>
+				<cy>4944</cy>
+			</node>
+			<node id="83" type="1">
+				<cx>8203</cx>
+				<cy>5017</cy>
+			</node>
+			<node id="84" type="1">
+				<cx>9132</cx>
+				<cy>5134</cy>
+			</node>
+			<node id="85" type="1">
+				<cx>4171</cx>
+				<cy>5231</cy>
+			</node>
+			<node id="86" type="1">
+				<cx>8622</cx>
+				<cy>5252</cy>
+			</node>
+			<node id="87" type="1">
+				<cx>8605</cx>
+				<cy>5330</cy>
+			</node>
+			<node id="88" type="1">
+				<cx>3151</cx>
+				<cy>5352</cy>
+			</node>
+			<node id="89" type="1">
+				<cx>8070</cx>
+				<cy>5462</cy>
+			</node>
+			<node id="90" type="1">
+				<cx>8645</cx>
+				<cy>5477</cy>
+			</node>
+			<node id="91" type="1">
+				<cx>8706</cx>
+				<cy>5720</cy>
+			</node>
+			<node id="92" type="1">
+				<cx>6993</cx>
+				<cy>5774</cy>
+			</node>
+			<node id="93" type="1">
+				<cx>9456</cx>
+				<cy>5866</cy>
+			</node>
+			<node id="94" type="1">
+				<cx>9077</cx>
+				<cy>5876</cy>
+			</node>
+			<node id="95" type="1">
+				<cx>8899</cx>
+				<cy>5933</cy>
+			</node>
+			<node id="96" type="1">
+				<cx>7070</cx>
+				<cy>6001</cy>
+			</node>
+			<node id="97" type="1">
+				<cx>6814</cx>
+				<cy>7928</cy>
+			</node>
+			<node id="98" type="1">
+				<cx>9178</cx>
+				<cy>6073</cy>
+			</node>
+			<node id="99" type="1">
+				<cx>4276</cx>
+				<cy>6082</cy>
+			</node>
+		</nodes>
+		<euclidean />
+		<floor />
+	</network>
+	<fleet>
+		<vehicle_profile type="1">
+			<departure_node>0</departure_node>
+			<arrival_node>0</arrival_node>
+			<capacity>30</capacity>
+			<max_travel_distance>15000</max_travel_distance>
+			<fix_cost>4000</fix_cost>
+			<cost_x_distance>1</cost_x_distance>
+			<cost_x_time>30000000</cost_x_time>
+		</vehicle_profile>
+	</fleet>
+	<requests>
+		<request id="1" node="72">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="2" node="67">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="3" node="63">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="4" node="62">
+			<quantity>9</quantity>
+			<resource id="5">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="5" node="66">
+			<quantity>27</quantity>
+			<resource id="4">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="6" node="49">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="7" node="90">
+			<quantity>24</quantity>
+			<resource id="3">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="8" node="29">
+			<quantity>3</quantity>
+			<resource id="2">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="9" node="1">
+			<quantity>18</quantity>
+			<resource id="1">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="10" node="35">
+			<quantity>24</quantity>
+			<resource id="3">2</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="11" node="52">
+			<quantity>9</quantity>
+			<resource id="2">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="12" node="96">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="13" node="25">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="14" node="79">
+			<quantity>9</quantity>
+			<resource id="5">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="15" node="69">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="16" node="89">
+			<quantity>9</quantity>
+			<resource id="2">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="17" node="40">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="18" node="81">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="19" node="76">
+			<quantity>3</quantity>
+			<resource id="2">1</resource>
+			<custom>
+				<first_deliver_day>3</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="20" node="3">
+			<quantity>9</quantity>
+			<resource id="4">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="21" node="16">
+			<quantity>24</quantity>
+			<resource id="3">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="22" node="39">
+			<quantity>27</quantity>
+			<resource id="4">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="23" node="73">
+			<quantity>9</quantity>
+			<resource id="2">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="24" node="9">
+			<quantity>9</quantity>
+			<resource id="5">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="25" node="58">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="26" node="50">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="27" node="92">
+			<quantity>3</quantity>
+			<resource id="2">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="28" node="22">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="29" node="95">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="30" node="28">
+			<quantity>27</quantity>
+			<resource id="4">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="31" node="37">
+			<quantity>3</quantity>
+			<resource id="2">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="32" node="99">
+			<quantity>3</quantity>
+			<resource id="2">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="33" node="20">
+			<quantity>6</quantity>
+			<resource id="1">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="34" node="15">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="35" node="5">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="36" node="83">
+			<quantity>9</quantity>
+			<resource id="4">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="37" node="30">
+			<quantity>6</quantity>
+			<resource id="1">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="38" node="21">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="39" node="13">
+			<quantity>9</quantity>
+			<resource id="2">3</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="40" node="18">
+			<quantity>6</quantity>
+			<resource id="1">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="41" node="14">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="42" node="84">
+			<quantity>27</quantity>
+			<resource id="5">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="43" node="80">
+			<quantity>18</quantity>
+			<resource id="1">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="44" node="44">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="45" node="65">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="46" node="45">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="47" node="6">
+			<quantity>18</quantity>
+			<resource id="1">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="48" node="17">
+			<quantity>9</quantity>
+			<resource id="2">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="49" node="48">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="50" node="33">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="51" node="70">
+			<quantity>18</quantity>
+			<resource id="1">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="52" node="57">
+			<quantity>27</quantity>
+			<resource id="4">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="53" node="36">
+			<quantity>27</quantity>
+			<resource id="4">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="54" node="74">
+			<quantity>6</quantity>
+			<resource id="1">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="55" node="32">
+			<quantity>18</quantity>
+			<resource id="5">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="56" node="85">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="57" node="84">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="58" node="91">
+			<quantity>18</quantity>
+			<resource id="5">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="59" node="60">
+			<quantity>18</quantity>
+			<resource id="5">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="60" node="46">
+			<quantity>27</quantity>
+			<resource id="5">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="61" node="86">
+			<quantity>9</quantity>
+			<resource id="5">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="62" node="34">
+			<quantity>27</quantity>
+			<resource id="5">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="63" node="38">
+			<quantity>24</quantity>
+			<resource id="3">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="64" node="53">
+			<quantity>9</quantity>
+			<resource id="5">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="65" node="56">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="66" node="19">
+			<quantity>9</quantity>
+			<resource id="2">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="67" node="88">
+			<quantity>3</quantity>
+			<resource id="2">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="68" node="71">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="69" node="94">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="70" node="23">
+			<quantity>27</quantity>
+			<resource id="4">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="71" node="4">
+			<quantity>18</quantity>
+			<resource id="5">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="72" node="26">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="73" node="93">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="74" node="59">
+			<quantity>24</quantity>
+			<resource id="3">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="75" node="82">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="76" node="55">
+			<quantity>18</quantity>
+			<resource id="1">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="77" node="51">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="78" node="10">
+			<quantity>24</quantity>
+			<resource id="3">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="79" node="68">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="80" node="47">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="81" node="61">
+			<quantity>27</quantity>
+			<resource id="5">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="82" node="27">
+			<quantity>27</quantity>
+			<resource id="5">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="83" node="64">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="84" node="12">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="85" node="87">
+			<quantity>9</quantity>
+			<resource id="4">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="86" node="75">
+			<quantity>12</quantity>
+			<resource id="1">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="87" node="77">
+			<quantity>24</quantity>
+			<resource id="3">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="88" node="43">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="89" node="11">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="90" node="8">
+			<quantity>18</quantity>
+			<resource id="1">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="91" node="31">
+			<quantity>18</quantity>
+			<resource id="4">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="92" node="97">
+			<quantity>18</quantity>
+			<resource id="1">3</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="93" node="7">
+			<quantity>12</quantity>
+			<resource id="3">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="94" node="41">
+			<quantity>6</quantity>
+			<resource id="2">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="95" node="24">
+			<quantity>9</quantity>
+			<resource id="5">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="96" node="54">
+			<quantity>6</quantity>
+			<resource id="1">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="97" node="2">
+			<quantity>27</quantity>
+			<resource id="4">3</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+		<request id="98" node="98">
+			<quantity>18</quantity>
+			<resource id="5">2</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>2</last_deliver_day>
+				<days_needed>3</days_needed>
+			</custom>
+		</request>
+		<request id="99" node="78">
+			<quantity>24</quantity>
+			<resource id="3">2</resource>
+			<custom>
+				<first_deliver_day>2</first_deliver_day>
+				<last_deliver_day>3</last_deliver_day>
+				<days_needed>2</days_needed>
+			</custom>
+		</request>
+		<request id="100" node="42">
+			<quantity>9</quantity>
+			<resource id="5">1</resource>
+			<custom>
+				<first_deliver_day>1</first_deliver_day>
+				<last_deliver_day>4</last_deliver_day>
+				<days_needed>1</days_needed>
+			</custom>
+		</request>
+	</requests>
+	<resources>
+		<resource cost="300000" id="1" renewable="false" size="6">38</resource>
+		<resource cost="400000" id="2" renewable="false" size="3">34</resource>
+		<resource cost="300000" id="3" renewable="false" size="12">18</resource>
+		<resource cost="100000" id="4" renewable="false" size="9">40</resource>
+		<resource cost="500000" id="5" renewable="false" size="9">28</resource>
+	</resources>
+</instance>
