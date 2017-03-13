@@ -18,16 +18,20 @@ import solver.StupidSolver2;
 
 public class Main {
 	public static void main(String[] args) {
-			
+		
+		String filename = "VeRoLog_r100d5_1.txt";
+		if (args.length > 0) {
+			filename = args[0]; 
+		}
 		Reader r = new Reader();
-		File f = new File("VeRoLog_r100d5_1.txt");
+		File f = new File(filename);
 		DataContoller data = r.readFile(f);
 		
 		StupidSolver2 stup = new StupidSolver2();
 		StrategyController strat = stup.solve(data);
 		
 		Writer w = new Writer();
-		w.write(data, strat);
+		w.write(data, strat, filename);
 		
 	}
 }
