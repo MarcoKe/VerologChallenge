@@ -3,16 +3,21 @@ package solver;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import data.DataContoller;
 import data.DayInformation;
+import data.Depot;
 import data.Request;
 import data.StrategyController;
+import data.Tool;
+import data.Vehicle;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import data.VehicleInformation;
 import data.Global;
+import data.Location;
 
 
 // hacked together, do not use as a reference 
@@ -43,9 +48,60 @@ public class StupidSolver2 implements Solver {
 			DayInformation day = new DayInformation(i+1);
 			dayList.add(day);
 			
-			// deliver all requests for the day 
+			
 			List<Request> delivered = new ArrayList<>();
 			int trucksUsed = 0; 
+			
+			List<Request> completedPickups = new ArrayList<>();
+			
+			// perform all scheduled pickups for the day
+			for (Request p : pickups) {
+				if (p.getStartTime() + p.getUsageTime() == i+1) {
+					trucksUsed++; 
+					completedPickups.add(p);
+					int tripDistance = g.computeDistance(data.getLocationList().get(0), p.getLocation());
+					
+					VehicleInformation vehicInfo = new VehicleInformation();
+					VehicleAction action = new VehicleAction(Action.PICK_UP, p);
+					vehicInfo.addAction(action);					
+					
+					// can we immediately deliver the tools we just picked up to another customer?
+					Optional<Request> possibleRequest = findRequest(requests, p.getTool(), i+1);
+					if (possibleRequest.isPresent()) {
+						Request request = possibleRequest.get();
+						List<Location> route = new ArrayList<>();
+						route.add(p.getLocation()); 
+						route.add(request.getLocation());
+						
+						if (possibleTrip(data, data.getLocationList().get(0), p.getLocation(), request.getLocation())) {
+							requests.remove(request);  // so we don't deliver the same request twice in this loop
+							delivered.add(request);    // so we can add all delivered ones to the pickup list later 
+							tripDistance += g.computeDistance(p.getLocation(), request.getLocation());
+							tripDistance += g.computeDistance(request.getLocation(), data.getLocationList().get(0));
+							VehicleAction action2 = new VehicleAction(Action.LOAD_AND_DELIVER, request);
+							vehicInfo.addAction(action2);
+						}
+						else {
+							tripDistance *= 2; 
+						}
+						
+					}
+					else {
+						tripDistance *= 2; 
+					}
+					
+					distance += tripDistance;
+					
+					
+					day.addVehicleInformation(vehicInfo);
+
+				}
+
+			}			
+			pickups.removeAll(completedPickups);		
+			
+			
+			// deliver all (remaining) requests for the day 
 			for (Request request : requests) {
 				if (request.getStartTime() == i+1) {
 					// 
@@ -63,21 +119,7 @@ public class StupidSolver2 implements Solver {
 
 			// pick up any tools from customers scheduled for the day 
 			// I'm abusing the Request class to hold Pickups here, not a great idea 
-			List<Request> completedPickups = new ArrayList<>();
-			for (Request p : pickups) {
-				if (p.getStartTime() + p.getUsageTime() == i+1) {
-					trucksUsed++; 
-					completedPickups.add(p);
-					distance += 2.0* (g.computeDistance(data.getLocationList().get(0), p.getLocation()));
-					
-					VehicleInformation vehicInfo = new VehicleInformation();
-					VehicleAction action = new VehicleAction(Action.PICK_UP, p);
-					vehicInfo.addAction(action);
-					day.addVehicleInformation(vehicInfo);
-
-				}
-
-			}
+			
 
 			if (trucksUsed > maxVehicles) {
 				maxVehicles = trucksUsed; 
@@ -87,7 +129,7 @@ public class StupidSolver2 implements Solver {
 
 			vehiclesUsed[i] = trucksUsed; 
 			trucksUsed = 0; 
-			pickups.removeAll(completedPickups);
+			
 			pickups.addAll(delivered);
 			requests.removeAll(delivered);
 
@@ -97,8 +139,9 @@ public class StupidSolver2 implements Solver {
 	}
 
 
-
-	// compute min # days needed to serve all requests and pick tools up again
+	/*
+	 * compute min # days needed to serve all requests and pick tools up again
+	 */
 	public int findMinDays(List<Request> requests) {
 		int minDays = 0;   
 		for (Request request : requests) {
@@ -111,4 +154,36 @@ public class StupidSolver2 implements Solver {
 
 		return minDays-1; 
 	}
+	
+	/*
+	 * Find a request for a given tool on a given day if it exists
+	 * (used to combine a pickup with a delivery) 
+	 * ideally we'd be selecting the request that minimizes the total distance 
+	 */
+	public Optional<Request> findRequest(List<Request> requests, Tool tool, int startTime) {		
+		  Optional<Request> request = requests
+		            .stream()
+		            .filter(r -> r.getStartTime() == startTime  && r.getTool().getId() == tool.getId())
+		            .findFirst();
+		  
+		  return request;
+	}
+	
+	
+	/*
+	 * Checks if the given trip violates the max distance constraint
+	 */
+	public boolean possibleTrip(DataContoller data, Location depot, Location l1, Location l2) {
+		Global g = data.getGlobal();
+		Vehicle vehicle = data.getVehicle();
+		
+		int distance = 0; 	
+		distance += g.computeDistance(depot, l1);
+		distance += g.computeDistance(l1, l2);
+		distance += g.computeDistance(l2, depot);
+		
+		
+		return (distance <= vehicle.getMaxDistance());
+	}
+	
 }
