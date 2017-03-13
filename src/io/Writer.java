@@ -18,9 +18,8 @@ public class Writer {
 	}
 	
 	
-	public void write(DataContoller data,StrategyController strat){
-		
-		String fileName = "test.sol.txt";
+	public void write(DataContoller data,StrategyController strat, String filename){
+		String fileName = filename.split("\\.")[0] + ".sol.txt";
 		BufferedWriter bw = null;	
 		try {
 			bw = new BufferedWriter(new FileWriter(fileName));
