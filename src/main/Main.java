@@ -15,6 +15,7 @@ import data.Vehicle;
 import io.Reader;
 import io.Writer;
 import solver.StupidSolver2;
+import solver.StupidSolver3;
 
 public class Main {
 	public static void main(String[] args) {
@@ -27,7 +28,7 @@ public class Main {
 		File f = new File(filename);
 		DataContoller data = r.readFile(f);
 		
-		StupidSolver2 stup = new StupidSolver2();
+		StupidSolver3 stup = new StupidSolver3();
 		StrategyController strat = stup.solve(data);
 		
 		Writer w = new Writer();
