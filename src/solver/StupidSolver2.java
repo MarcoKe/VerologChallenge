@@ -23,11 +23,17 @@ import data.Location;
 // hacked together, do not use as a reference 
 public class StupidSolver2 implements Solver {
 	
+	DataContoller data; 
+	Location depot; 
+	
 	public StupidSolver2() {
 
 	}
 
-	public StrategyController solve(DataContoller data) {
+	public StrategyController solve(DataContoller d) {
+		data = d;
+		depot = data.getLocationList().get(0);
+		
 		List<DayInformation> dayList = new ArrayList<>();
 		
 		Global g = data.getGlobal();
@@ -66,14 +72,14 @@ public class StupidSolver2 implements Solver {
 					vehicInfo.addAction(action);					
 					
 					// can we immediately deliver the tools we just picked up to another customer?
-					Optional<Request> possibleRequest = findRequest(requests, p.getTool(), i+1);
+					Optional<Request> possibleRequest = findRequest(requests, p.getTool(), i+1, p);
 					if (possibleRequest.isPresent()) {
 						Request request = possibleRequest.get();
 						List<Location> route = new ArrayList<>();
 						route.add(p.getLocation()); 
 						route.add(request.getLocation());
 						
-						if (possibleTrip(data, data.getLocationList().get(0), p.getLocation(), request.getLocation())) {
+						if (possibleTrip(p.getLocation(), request.getLocation())) {
 							requests.remove(request);  // so we don't deliver the same request twice in this loop
 							delivered.add(request);    // so we can add all delivered ones to the pickup list later 
 							tripDistance += g.computeDistance(p.getLocation(), request.getLocation());
@@ -160,30 +166,35 @@ public class StupidSolver2 implements Solver {
 	 * (used to combine a pickup with a delivery) 
 	 * ideally we'd be selecting the request that minimizes the total distance 
 	 */
-	public Optional<Request> findRequest(List<Request> requests, Tool tool, int startTime) {		
-		  Optional<Request> request = requests
+	public Optional<Request> findRequest(List<Request> requests, Tool tool, int startTime, Request request) {		
+		  Optional<Request> chosen = requests
 		            .stream()
 		            .filter(r -> r.getStartTime() == startTime  && r.getTool().getId() == tool.getId())
-		            .findFirst();
+		            .min((r1, r2) -> Integer.compare(tripDistance(request.getLocation(), r1.getLocation()), tripDistance(request.getLocation(), r2.getLocation())));
 		  
-		  return request;
+		  return chosen;
 	}
 	
 	
 	/*
 	 * Checks if the given trip violates the max distance constraint
 	 */
-	public boolean possibleTrip(DataContoller data, Location depot, Location l1, Location l2) {
-		Global g = data.getGlobal();
+	public boolean possibleTrip(Location l1, Location l2) {
 		Vehicle vehicle = data.getVehicle();
 		
+		int distance = tripDistance(l1, l2);		
+		
+		return (distance <= vehicle.getMaxDistance());
+	}
+	
+	public int tripDistance( Location l1, Location l2) {
+		Global g = data.getGlobal();
 		int distance = 0; 	
 		distance += g.computeDistance(depot, l1);
 		distance += g.computeDistance(l1, l2);
 		distance += g.computeDistance(l2, depot);
 		
-		
-		return (distance <= vehicle.getMaxDistance());
+		return distance;
 	}
 	
 }
