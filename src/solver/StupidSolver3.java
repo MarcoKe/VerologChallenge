@@ -2,16 +2,13 @@ package solver;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import data.DataContoller;
 import data.DayInformation;
-import data.Depot;
 import data.Request;
 import data.StrategyController;
 import data.Tool;
@@ -26,15 +23,52 @@ import data.Location;
 // hacked together, do not use as a reference 
 public class StupidSolver3 implements Solver {
 	
-	DataContoller data; 
-	Location depot; 
-	Map<Integer, DayInformation> days;
-	List<Request> possibleMatches;
-	List<Request> requests;
-	List<Request> servedRequests; 
+	private DataContoller data; 
+	private Location depot; 
+	private Map<Integer, DayInformation> days;
+	private List<Request> possibleMatches;
+	private List<Request> requests;
+	private List<Request> servedRequests; 
 	
 	public StupidSolver3() {
 
+	}
+	
+	public void init(DataContoller d) {
+		data = d; 
+		depot = data.getLocationList().get(0);
+		requests = data.getRequestList();
+		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getStartTime(), o2.getStartTime()));  // sort requests by startTime
+		
+		possibleMatches = new ArrayList<>(requests);	
+		servedRequests = new ArrayList<>();   
+		days = new TreeMap<>();		// TreeMap guarantees that days.values() is in correct order 
+	}
+	
+
+	public StrategyController solve(DataContoller d) {	
+		init(d);		
+		
+		for (Request request : requests) {
+			possibleMatches.remove(request);
+			
+			if (servedRequests.contains(request)) {
+				continue;
+			}				
+			
+			if (!match(request)) { // if no match is found just use one truck to deliver request and then pick it up again
+				// add delivery 
+				addVehicle(request.getStartTime(), new VehicleAction(Action.LOAD_AND_DELIVER, request));
+				
+				// add pickup
+				addVehicle(request.getStartTime()+request.getUsageTime(), new VehicleAction(Action.PICK_UP, request));
+				
+				possibleMatches.remove(request); 				
+			}
+		}
+		
+		return new StrategyController(new ArrayList<>(days.values()));
+		
 	}
 	
 	/* 
@@ -76,28 +110,14 @@ public class StupidSolver3 implements Solver {
 					if(!possibleTrip(request.getLocation(), match.getLocation()))
 						continue;
 					
-					// add delivery for request
-					VehicleInformation vehicInfo1 = new VehicleInformation();
-					VehicleAction action1 = new VehicleAction(Action.LOAD_AND_DELIVER, request);
-					vehicInfo1.addAction(action1);				
-					
-					addVehicle(i, vehicInfo1);					
+					// add delivery for request					
+					addVehicle(i, new VehicleAction(Action.LOAD_AND_DELIVER, request));					
 					
 					// add pickup with subsequent request serve
-					VehicleInformation vehicInfo2 = new VehicleInformation();
-					VehicleAction action2 = new VehicleAction(Action.PICK_UP, request);
-					vehicInfo2.addAction(action2);
-					VehicleAction action3 = new VehicleAction(Action.LOAD_AND_DELIVER, match);
-					vehicInfo2.addAction(action3);
+					addVehicle(i + request.getUsageTime(), new VehicleAction(Action.PICK_UP, request), new VehicleAction(Action.LOAD_AND_DELIVER, match));
 					
-					addVehicle(i + request.getUsageTime(), vehicInfo2);
-					
-					// add pickup for matched request
-					VehicleInformation vehicInfo3 = new VehicleInformation(); 
-					VehicleAction action4 = new VehicleAction(Action.PICK_UP, match); 
-					vehicInfo3.addAction(action4);
-					
-					addVehicle(i + request.getUsageTime() + match.getUsageTime(), vehicInfo3);
+					// add pickup for matched request					
+					addVehicle(i + request.getUsageTime() + match.getUsageTime(), new VehicleAction(Action.PICK_UP, match));
 					
 					possibleMatches.remove(match); 
 					servedRequests.add(match);
@@ -108,55 +128,25 @@ public class StupidSolver3 implements Solver {
 		}
 		
 		return false; 
-	}
+	}	
 	
-	public void addVehicle(int day, VehicleInformation vehicInfo) {		
+	/* 
+	 * creates and adds vehicleInformation to a specified day. A variable number of VehicleAction objects can be given as input 
+	 */
+	public void addVehicle(int day, VehicleAction... actions) {
 		if (days.get(day) == null) {
 			days.put(day, new DayInformation(day));
 		}
 		
+		VehicleInformation vehicInfo = new VehicleInformation();
+		
+		for (VehicleAction a : actions) {
+			vehicInfo.addAction(a);
+		}	
+		
 		days.get(day).addVehicleInformation(vehicInfo);
-	}
-	
-
-	public StrategyController solve(DataContoller d) {	
-		data = d; 
-		depot = data.getLocationList().get(0);
-		Global g = data.getGlobal();
-		requests = data.getRequestList();		
-		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getStartTime(), o2.getStartTime()));
-		possibleMatches = new ArrayList<>(requests);	
-		servedRequests = new ArrayList<>();
-		days = new TreeMap<>();		
-		
-		for (Request request : requests) {
-			possibleMatches.remove(request);
-			
-			if (servedRequests.contains(request)) {
-				continue;
-			}				
-			
-			if (!match(request)) { // if no match is found just use one truck to deliver request and then pick it up again
-				VehicleInformation vehicInfo1 = new VehicleInformation();
-				VehicleAction action1 = new VehicleAction(Action.LOAD_AND_DELIVER, request);
-				vehicInfo1.addAction(action1);				
-				
-				addVehicle(request.getStartTime(), vehicInfo1);
-				
-				VehicleInformation vehicInfo2 = new VehicleInformation();
-				VehicleAction action2 = new VehicleAction(Action.PICK_UP, request);
-				vehicInfo2.addAction(action2);				
-				
-				addVehicle(request.getStartTime()+request.getUsageTime(), vehicInfo2);
-				
-				possibleMatches.remove(request); 				
-			}
-		}
-		
-		return new StrategyController(new ArrayList<>(days.values()));
 		
 	}
-
 
 	/*
 	 * compute min # days needed to serve all requests and pick tools up again
@@ -187,7 +177,6 @@ public class StupidSolver3 implements Solver {
 		  
 		  return chosen;
 	}
-//	if (inTimeWindow(match.getStartTime(), match.getEndTime(), i + request.getUsageTime())) {
 	
 	/*
 	 * Checks if the given trip violates the max distance constraint
@@ -195,13 +184,15 @@ public class StupidSolver3 implements Solver {
 	public boolean possibleTrip(Location l1, Location l2) {
 		Vehicle vehicle = data.getVehicle();
 		
-		int distance = tripDistance(l1, l2);		
-		
-		return (distance <= vehicle.getMaxDistance());
+		return (tripDistance(l1, l2) <= vehicle.getMaxDistance());
 	}
 	
+	/* 
+	 * Calculates the trip distance 
+	 * TODO: should be able to compute trip distance for more than 2 locations 
+	 */
 	public int tripDistance( Location l1, Location l2) {
-		Global g = data.getGlobal();
+		Global g = data.getGlobal(); 
 		int distance = 0; 	
 		distance += g.computeDistance(depot, l1);
 		distance += g.computeDistance(l1, l2);
