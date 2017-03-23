@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
-import data.DataContoller;
+import data.DataController;
 import data.DayInformation;
 import data.Request;
 import data.StrategyController;
@@ -23,7 +23,7 @@ import data.Location;
 // hacked together, do not use as a reference 
 public class StupidSolver3 implements Solver {
 	
-	private DataContoller data; 
+	private DataController data; 
 	private Location depot; 
 	private Map<Integer, DayInformation> days;
 	private List<Request> possibleMatches;
@@ -34,7 +34,7 @@ public class StupidSolver3 implements Solver {
 
 	}
 	
-	public void init(DataContoller d) {
+	public void init(DataController d) {
 		data = d; 
 		depot = data.getLocationList().get(0);
 		requests = data.getRequestList();
@@ -46,7 +46,7 @@ public class StupidSolver3 implements Solver {
 	}
 	
 
-	public StrategyController solve(DataContoller d) {	
+	public StrategyController solve(DataController d) {	
 		init(d);		
 		
 		for (Request request : requests) {

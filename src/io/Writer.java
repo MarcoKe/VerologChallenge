@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import data.DataContoller;
+import data.DataController;
 import data.StrategyController;
 
 public class Writer {
@@ -18,7 +18,7 @@ public class Writer {
 	}
 	
 	
-	public void write(DataContoller data,StrategyController strat, String filename){
+	public void write(DataController data,StrategyController strat, String filename){
 		String fileName = filename.split("\\.")[0] + ".sol.txt";
 		BufferedWriter bw = null;	
 		try {
@@ -48,7 +48,7 @@ public class Writer {
 	}
 	
 	
-	private String computeOptionalInfo(DataContoller data, StrategyController start){
+	private String computeOptionalInfo(DataController data, StrategyController start){
 		StringBuilder sb = new StringBuilder();
 		sb.append("bullshit");
 		return sb.toString();

@@ -2,7 +2,7 @@ package data;
 
 import java.util.List;
 
-public class DataContoller {
+public class DataController {
 	private final Depot depot;
 	private final Global global;
 	private final List<Location> locationList;
@@ -10,7 +10,7 @@ public class DataContoller {
 	private final List<Tool> toolList;
 	private final Vehicle vehicle;
 
-	public DataContoller(Depot depot, Global global, List<Location> locList, List<Request> reqList, List<Tool> toolList,
+	public DataController(Depot depot, Global global, List<Location> locList, List<Request> reqList, List<Tool> toolList,
 			Vehicle vehicle) {
 		this.depot=depot;
 		this.global= global;

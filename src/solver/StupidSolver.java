@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-import data.DataContoller;
+import data.DataController;
 import data.Request;
 import io.Reader;
 import data.Global;
@@ -38,7 +38,7 @@ public class StupidSolver implements Solver {
 		for (File file : files) {
 			Reader r = new Reader();
 			File f = new File(INPUT_FOLDER + "" + file.getName());
-			DataContoller data = r.readFile(f);
+			DataController data = r.readFile(f);
 			String solution = solver.solve(data);
 
 			try (Writer writer = new BufferedWriter(new OutputStreamWriter(
@@ -48,7 +48,7 @@ public class StupidSolver implements Solver {
 		}
 	}
 
-	public String solve(DataContoller data) {
+	public String solve(DataController data) {
 		StringBuilder solution = new StringBuilder();    // should not build the output string directly in the actual algorithm
 		Global g = data.getGlobal();
 		List<Request> requests = data.getRequestList();		

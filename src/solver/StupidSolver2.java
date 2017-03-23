@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import data.DataContoller;
+import data.DataController;
 import data.DayInformation;
 import data.Depot;
 import data.Request;
@@ -23,14 +23,14 @@ import data.Location;
 // hacked together, do not use as a reference 
 public class StupidSolver2 implements Solver {
 	
-	DataContoller data; 
+	DataController data; 
 	Location depot; 
 	
 	public StupidSolver2() {
 
 	}
 
-	public StrategyController solve(DataContoller d) {
+	public StrategyController solve(DataController d) {
 		data = d;
 		depot = data.getLocationList().get(0);
 		

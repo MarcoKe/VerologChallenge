@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import data.DataContoller;
+import data.DataController;
 import data.Depot;
 import data.Global;
 import data.Location;
@@ -26,7 +26,7 @@ public class Main {
 		}
 		Reader r = new Reader();
 		File f = new File(filename);
-		DataContoller data = r.readFile(f);
+		DataController data = r.readFile(f);
 		
 		StupidSolver3 stup = new StupidSolver3();
 		StrategyController strat = stup.solve(data);
