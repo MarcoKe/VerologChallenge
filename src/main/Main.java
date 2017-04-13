@@ -14,13 +14,15 @@ import data.Tool;
 import data.Vehicle;
 import io.Reader;
 import io.Writer;
+import solver.BruteforceSolver;
+import solver.Solver;
 import solver.StupidSolver2;
 import solver.StupidSolver3;
 
 public class Main {
 	public static void main(String[] args) {
 		
-		String filename = "VeRoLog_r100d5_1.txt";
+		String filename = "data/ORTEC_Test/ORTEC_Test_01.txt";
 		if (args.length > 0) {
 			filename = args[0]; 
 		}
@@ -28,7 +30,7 @@ public class Main {
 		File f = new File(filename);
 		DataController data = r.readFile(f);
 		
-		StupidSolver3 stup = new StupidSolver3();
+		Solver stup = new BruteforceSolver();
 		StrategyController strat = stup.solve(data);
 		
 		Writer w = new Writer();
