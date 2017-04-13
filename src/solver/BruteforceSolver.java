@@ -2,7 +2,6 @@ package solver;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,18 +10,16 @@ import java.util.stream.Collectors;
 
 import data.DataController;
 import data.DayInformation;
-import data.Location;
 import data.Request;
 import data.StrategyController;
 import data.Tool;
 import data.VehicleAction;
-import data.VehicleInformation;
 import data.VehicleAction.Action;
+import data.VehicleInformation;
 import io.Reader;
 
-public class BruteforceSolver implements Solver {
+public class BruteforceSolver implements Solver {	
 	
-	private int counter = 0; 
 	private List<Map<Request, Integer>> feasibleSolutions;  
 	private Map<Integer, DayInformation> days;
 	
@@ -32,18 +29,12 @@ public class BruteforceSolver implements Solver {
 		
 		
 		for (Tool tool : data.getToolList()) {
-			System.out.println("TOOL " + tool.getId() + "\n ==================================================");
 			List<Request> requestsForTool = requests.stream().filter(r -> r.getTool().getId() == tool.getId()).collect(Collectors.toList());
 			
 			feasibleSolutions = new ArrayList<>();
 			recurse(requestsForTool, new HashMap<>(), new HashMap<>());
-			System.out.println("feasible solution sizes (" + feasibleSolutions.size() + " solutions)");
-			for (Map<Request, Integer> sol : feasibleSolutions) {
-				System.out.println(sol.keySet().size());
-			}
 			
 			// stupid routing, should ideally be decoupled from this class 
-			Collections.sort(feasibleSolutions, Collections.reverseOrder((o1, o2) -> Integer.compare(o1.keySet().size(), o2.keySet().size())));
 			Map<Request, Integer> feasiblePlacement = feasibleSolutions.get(0);   // just takes the first feasible solution
 			for (Request key : feasiblePlacement.keySet()) {
 				
@@ -82,17 +73,9 @@ public class BruteforceSolver implements Solver {
 	}
 	//
 	
-	public boolean recurse(List<Request> requests, Map<Request, Integer> placedRequests, Map<Integer, Integer> toolUsage) {
-//		System.out.println("====================\nCurrent placement: ");
-//		for (Request key : placedRequests.keySet()) {
-//			System.out.println("Request " + key.getId() + " placed on day " + placedRequests.get(key));
-//		}
-//		System.out.println("Requests left: " + requests.size());
-		
-		
+	public boolean recurse(List<Request> requests, Map<Request, Integer> placedRequests, Map<Integer, Integer> toolUsage) {		
 		if (requests.isEmpty()) {		
 			feasibleSolutions.add(placedRequests);
-//			System.out.println("solution final");
 			return true; 
 		}
 		Request request = requests.remove(0);
@@ -138,11 +121,6 @@ public class BruteforceSolver implements Solver {
 		
 		BruteforceSolver b = new BruteforceSolver(); 
 		b.solve(data);
-		
-		System.out.println("++++++++++");
-		for (Map<Request,Integer> bla : b.feasibleSolutions) {
-			System.out.println(bla.keySet().size());
-		}
 		
 		
 	}
