@@ -23,7 +23,7 @@ import solver.StupidSolver3;
 public class Main {
 	public static void main(String[] args) {
 		
-		String filename = "data/ORTEC_Test/ORTEC_Test_03.txt";
+		String filename = "data/ORTEC_Test/ORTEC_Test_01.txt";
 		if (args.length > 0) {
 			filename = args[0]; 
 		}
@@ -31,7 +31,7 @@ public class Main {
 		File f = new File(filename);
 		DataController data = r.readFile(f);
 		
-		Solver stup = new SimulatedAnnealingSolver();
+		Solver stup = new StupidSolver3();
 		StrategyController strat = stup.solve(data);
 		
 		Writer w = new Writer();
