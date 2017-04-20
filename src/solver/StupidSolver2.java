@@ -38,7 +38,7 @@ public class StupidSolver2 implements Solver {
 		
 		Global g = data.getGlobal();
 		List<Request> requests = data.getRequestList();		
-		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getStartTime(), o2.getStartTime()));
+		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getEndTime(), o2.getEndTime()));
 
 		int minDays = findMinDays(requests); 
 
@@ -62,7 +62,7 @@ public class StupidSolver2 implements Solver {
 			
 			// perform all scheduled pickups for the day
 			for (Request p : pickups) {
-				if (p.getStartTime() + p.getUsageTime() == i+1) {
+				if (p.getEndTime() + p.getUsageTime() == i+1) {
 					trucksUsed++; 
 					completedPickups.add(p);
 					int tripDistance = g.computeDistance(data.getLocationList().get(0), p.getLocation());
@@ -109,7 +109,7 @@ public class StupidSolver2 implements Solver {
 			
 			// deliver all (remaining) requests for the day 
 			for (Request request : requests) {
-				if (request.getStartTime() == i+1) {
+				if (request.getEndTime() == i+1) {
 					// 
 					delivered.add(request); 	
 					trucksUsed++;
@@ -151,7 +151,7 @@ public class StupidSolver2 implements Solver {
 	public int findMinDays(List<Request> requests) {
 		int minDays = 0;   
 		for (Request request : requests) {
-			int sum = request.getStartTime() + request.getUsageTime()+1; 
+			int sum = request.getEndTime() + request.getUsageTime()+1; 
 
 			if (sum > minDays) {
 				minDays = sum; 
@@ -169,7 +169,7 @@ public class StupidSolver2 implements Solver {
 	public Optional<Request> findRequest(List<Request> requests, Tool tool, int startTime, Request request) {		
 		  Optional<Request> chosen = requests
 		            .stream()
-		            .filter(r -> r.getStartTime() == startTime  && r.getTool().getId() == tool.getId())
+		            .filter(r -> r.getEndTime() == startTime  && r.getTool().getId() == tool.getId())
 		            .min((r1, r2) -> Integer.compare(tripDistance(request.getLocation(), r1.getLocation()), tripDistance(request.getLocation(), r2.getLocation())));
 		  
 		  return chosen;

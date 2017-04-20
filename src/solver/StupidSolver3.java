@@ -38,7 +38,7 @@ public class StupidSolver3 implements Solver {
 		data = d; 
 		depot = data.getLocationList().get(0);
 		requests = data.getRequestList();
-		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getStartTime(), o2.getStartTime()));  // sort requests by startTime
+		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getEndTime(), o2.getEndTime()));  // sort requests by startTime
 		
 		possibleMatches = new ArrayList<>(requests);	
 		servedRequests = new ArrayList<>();   
@@ -58,10 +58,10 @@ public class StupidSolver3 implements Solver {
 			
 			if (!match(request)) { // if no match is found just use one truck to deliver request and then pick it up again
 				// add delivery 
-				addVehicle(request.getStartTime(), new VehicleAction(Action.LOAD_AND_DELIVER, request));
+				addVehicle(request.getEndTime(), new VehicleAction(Action.LOAD_AND_DELIVER, request));
 				
 				// add pickup
-				addVehicle(request.getStartTime()+request.getUsageTime(), new VehicleAction(Action.PICK_UP, request));
+				addVehicle(request.getEndTime()+request.getUsageTime(), new VehicleAction(Action.PICK_UP, request));
 				
 				possibleMatches.remove(request); 				
 			}
@@ -75,8 +75,8 @@ public class StupidSolver3 implements Solver {
 	 * Checks whether the given request can be matched to any other request 
 	 */
 	public boolean isMatchable(Request request, Request potentialMatch) {
-		if (inTimeWindow(request.getStartTime(), request.getEndTime(), potentialMatch.getStartTime())) {
-			if (request.getStartTime() + request.getUsageTime() + 1 <= potentialMatch.getStartTime()) {
+		if (inTimeWindow(request.getEndTime(), request.getEndTime(), potentialMatch.getEndTime())) {
+			if (request.getEndTime() + request.getUsageTime() + 1 <= potentialMatch.getEndTime()) {
 				return true; 
 			}
 		}
@@ -99,7 +99,7 @@ public class StupidSolver3 implements Solver {
 	 * Tries to match a given request to some other request. If successful, returns true. 
 	 */
 	public boolean match(Request request) {
-		for (int i = request.getStartTime(); i < request.getEndTime(); i++) {
+		for (int i = request.getEndTime(); i < request.getEndTime(); i++) {
 			List<Request> matchSpace = new ArrayList<>(possibleMatches);
 			matchSpace.remove(request);
 	
@@ -154,7 +154,7 @@ public class StupidSolver3 implements Solver {
 	public int findMinDays(List<Request> requests) {
 		int minDays = 0;   
 		for (Request request : requests) {
-			int sum = request.getStartTime() + request.getUsageTime()+1; 
+			int sum = request.getEndTime() + request.getUsageTime()+1; 
 
 			if (sum > minDays) {
 				minDays = sum; 
@@ -172,7 +172,7 @@ public class StupidSolver3 implements Solver {
 	public Optional<Request> findRequest(List<Request> requests, Tool tool, int startTime, int endTime, Request request) {		
 		  Optional<Request> chosen = requests
 		            .stream()
-		            .filter(r -> inTimeWindow(r.getStartTime(), r.getEndTime(), endTime)  && r.getTool().getId() == tool.getId())
+		            .filter(r -> inTimeWindow(r.getEndTime(), r.getEndTime(), endTime)  && r.getTool().getId() == tool.getId())
 		            .min((r1, r2) -> Integer.compare(tripDistance(request.getLocation(), r1.getLocation()), tripDistance(request.getLocation(), r2.getLocation())));
 		  
 		  return chosen;
