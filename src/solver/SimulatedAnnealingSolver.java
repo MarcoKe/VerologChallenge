@@ -204,7 +204,7 @@ public class SimulatedAnnealingSolver implements Solver {
 					Optional<Request> selected = matchesBegin.stream().min((m1, m2) -> Integer.compare(tripDistance(request.getLocation(), m1.getLocation()), tripDistance(request.getLocation(), m2.getLocation())));
 					
 					if (selected.isPresent() && possibleTrip(selected.get().getLocation(), request.getLocation())) {
-						addVehicle(delivery, new VehicleAction(Action.LOAD_AND_DELIVER, request), new VehicleAction(Action.PICK_UP, selected.get()));
+						addVehicle(delivery, new VehicleAction(Action.PICK_UP, selected.get()), new VehicleAction(Action.LOAD_AND_DELIVER, request));
 						
 						// book keeping 
 						accountedForPickup.add(selected.get()); 
