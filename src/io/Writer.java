@@ -5,13 +5,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import data.DataContoller;
+import data.OverallCost;
 import data.StrategyController;
+import util.CostUtil;
 
 public class Writer {
 	private static final String DATASET_VAR = "DATASET = ";
 	private static final String NAME_VAR = "NAME = ";
 	
-	private static boolean writeOptionalInfo = false;
+	private static boolean writeOptionalInfo = true;
 
 	public Writer() {
 	
@@ -48,9 +50,11 @@ public class Writer {
 	}
 	
 	
-	private String computeOptionalInfo(DataContoller data, StrategyController start){
+	private String computeOptionalInfo(DataContoller data, StrategyController strat){
 		StringBuilder sb = new StringBuilder();
-		sb.append("bullshit");
+		OverallCost cost = CostUtil.getOverallCost(data, strat);
+		
+		sb.append(cost);		
 		return sb.toString();
 	}
 }

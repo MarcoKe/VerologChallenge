@@ -33,12 +33,15 @@ public class OverallCost {
 		this.numVehicleDays = numVehicDays;
 		this.toolUsageMap = toolUsageMap;
 		this.distance = distance;
-		this.totalCost = calcTotalCost(data);
+		totalCost = TOTAL_COST_DEFAULT;
+		
+		calcTotalCost(data);
 	}
 
+	
 	public long calcTotalCost(DataContoller data) {
 		long ret = totalCost;
-		if(ret == TOTAL_COST_DEFAULT) {
+		if(ret == TOTAL_COST_DEFAULT) {			
 			ret = 0;
 			ret += data.getVehicle().getCostPerVehicle() * maxVehicle;
 			ret += data.getVehicle().getCostPerDay() * numVehicleDays;
@@ -53,8 +56,8 @@ public class OverallCost {
 					throw new RuntimeException("Tool " + t.getId() + " not in toolUsageMap");
 				}
 			}
+			totalCost = ret;
 		}
-
 		return ret;
 	}
 	
@@ -76,7 +79,7 @@ public class OverallCost {
 				sb.append(' ');
 			}
 		}
-		sb.deleteCharAt(sb.length());	
+		sb.deleteCharAt(sb.length()-1);	
 		sb.append('\n');
 		sb.append(DIST);
 		sb.append(this.distance);
