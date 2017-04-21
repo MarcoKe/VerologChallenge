@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import data.DataContoller;
+import data.DataController;
 import data.Depot;
 import data.Global;
 import data.Location;
@@ -55,8 +55,8 @@ public class Reader {
 	 * @param f
 	 * @return
 	 */
-	public DataContoller readFile(File f) {
-		DataContoller ret = null;
+	public DataController readFile(File f) {
+		DataController ret = null;
 		if (!f.exists()) {
 			System.out.println("File doesnt exist");
 			return ret;
@@ -156,7 +156,7 @@ public class Reader {
 			}
 		}
 
-		ret = new DataContoller(depot, global, locList, reqList, toolList, vehicle);
+		ret = new DataController(depot, global, locList, reqList, toolList, vehicle);
 
 		return ret;
 	}

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import data.DataContoller;
+import data.DataController;
 import data.DayInformation;
 import data.Depot;
 import data.Request;
@@ -23,16 +23,22 @@ import data.Location;
 // hacked together, do not use as a reference 
 public class StupidSolver2 implements Solver {
 	
+	DataController data; 
+	Location depot; 
+	
 	public StupidSolver2() {
 
 	}
 
-	public StrategyController solve(DataContoller data) {
+	public StrategyController solve(DataController d) {
+		data = d;
+		depot = data.getLocationList().get(0);
+		
 		List<DayInformation> dayList = new ArrayList<>();
 		
 		Global g = data.getGlobal();
 		List<Request> requests = data.getRequestList();		
-		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getStartTime(), o2.getStartTime()));
+		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getEndTime(), o2.getEndTime()));
 
 		int minDays = findMinDays(requests); 
 
@@ -56,7 +62,7 @@ public class StupidSolver2 implements Solver {
 			
 			// perform all scheduled pickups for the day
 			for (Request p : pickups) {
-				if (p.getStartTime() + p.getUsageTime() == i+1) {
+				if (p.getEndTime() + p.getUsageTime() == i+1) {
 					trucksUsed++; 
 					completedPickups.add(p);
 					int tripDistance = g.computeDistance(data.getLocationList().get(0), p.getLocation());
@@ -66,14 +72,14 @@ public class StupidSolver2 implements Solver {
 					vehicInfo.addAction(action);					
 					
 					// can we immediately deliver the tools we just picked up to another customer?
-					Optional<Request> possibleRequest = findRequest(requests, p.getTool(), i+1);
+					Optional<Request> possibleRequest = findRequest(requests, p.getTool(), i+1, p);
 					if (possibleRequest.isPresent()) {
 						Request request = possibleRequest.get();
 						List<Location> route = new ArrayList<>();
 						route.add(p.getLocation()); 
 						route.add(request.getLocation());
 						
-						if (possibleTrip(data, data.getLocationList().get(0), p.getLocation(), request.getLocation())) {
+						if (possibleTrip(p.getLocation(), request.getLocation())) {
 							requests.remove(request);  // so we don't deliver the same request twice in this loop
 							delivered.add(request);    // so we can add all delivered ones to the pickup list later 
 							tripDistance += g.computeDistance(p.getLocation(), request.getLocation());
@@ -103,7 +109,7 @@ public class StupidSolver2 implements Solver {
 			
 			// deliver all (remaining) requests for the day 
 			for (Request request : requests) {
-				if (request.getStartTime() == i+1) {
+				if (request.getEndTime() == i+1) {
 					// 
 					delivered.add(request); 	
 					trucksUsed++;
@@ -145,7 +151,7 @@ public class StupidSolver2 implements Solver {
 	public int findMinDays(List<Request> requests) {
 		int minDays = 0;   
 		for (Request request : requests) {
-			int sum = request.getStartTime() + request.getUsageTime()+1; 
+			int sum = request.getEndTime() + request.getUsageTime()+1; 
 
 			if (sum > minDays) {
 				minDays = sum; 
@@ -160,30 +166,35 @@ public class StupidSolver2 implements Solver {
 	 * (used to combine a pickup with a delivery) 
 	 * ideally we'd be selecting the request that minimizes the total distance 
 	 */
-	public Optional<Request> findRequest(List<Request> requests, Tool tool, int startTime) {		
-		  Optional<Request> request = requests
+	public Optional<Request> findRequest(List<Request> requests, Tool tool, int startTime, Request request) {		
+		  Optional<Request> chosen = requests
 		            .stream()
-		            .filter(r -> r.getStartTime() == startTime  && r.getTool().getId() == tool.getId())
-		            .findFirst();
+		            .filter(r -> r.getEndTime() == startTime  && r.getTool().getId() == tool.getId())
+		            .min((r1, r2) -> Integer.compare(tripDistance(request.getLocation(), r1.getLocation()), tripDistance(request.getLocation(), r2.getLocation())));
 		  
-		  return request;
+		  return chosen;
 	}
 	
 	
 	/*
 	 * Checks if the given trip violates the max distance constraint
 	 */
-	public boolean possibleTrip(DataContoller data, Location depot, Location l1, Location l2) {
-		Global g = data.getGlobal();
+	public boolean possibleTrip(Location l1, Location l2) {
 		Vehicle vehicle = data.getVehicle();
 		
+		int distance = tripDistance(l1, l2);		
+		
+		return (distance <= vehicle.getMaxDistance());
+	}
+	
+	public int tripDistance( Location l1, Location l2) {
+		Global g = data.getGlobal();
 		int distance = 0; 	
 		distance += g.computeDistance(depot, l1);
 		distance += g.computeDistance(l1, l2);
 		distance += g.computeDistance(l2, depot);
 		
-		
-		return (distance <= vehicle.getMaxDistance());
+		return distance;
 	}
 	
 }

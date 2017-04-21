@@ -19,6 +19,10 @@ public class VehicleInformation {
 
 	public void addAction(VehicleAction vehicAct) {
 		route.add(route.size()-1,vehicAct);
+	}	
+
+	public VehicleAction removeAction(int index) {
+		return route.remove(index);
 	}
 
 	public final List<VehicleAction> getRoute() {

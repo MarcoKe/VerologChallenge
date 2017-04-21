@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import data.DataContoller;
+
 import data.DayInformation;
 import data.Location;
+
+import data.DataController;
+
 import data.OverallCost;
 import data.Request;
 import data.StrategyController;
@@ -17,7 +20,7 @@ import data.VehicleInformation;
 
 public class CostUtil {
 
-	public static OverallCost getOverallCost(DataContoller data, StrategyController strat) {
+	public static OverallCost getOverallCost(DataController data, StrategyController strat) {
 
 		OverallCost ret = null;
 		int maxVehic = 0;
@@ -97,6 +100,10 @@ public class CostUtil {
 				currOnRoad+= partsToDepot;
 				roadToolUsage.put(t.getId(), currOnRoad);			
 			}
+
+	
+	
+
 			
 		}
 
@@ -113,7 +120,7 @@ public class CostUtil {
 	 * @param action
 	 * @return Location of given action or Location of Depot if action is NULL
 	 */
-	private static Location getLocation(DataContoller data, VehicleAction action) {
+	private static Location getLocation(DataController data, VehicleAction action) {
 		Location ret = data.getDepot().getLocation();
 		if (action != null && action.getVehicleAction() != Action.TO_DEPOT) {
 			ret = action.getRequest().getLocation();

@@ -27,6 +27,10 @@ public class DayInformation {
 		return vehicList;
 	}
 	
+	public int getDay() {
+		return day; 
+	}
+	
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(DAY_KEY);

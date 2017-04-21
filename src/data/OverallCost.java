@@ -28,7 +28,7 @@ public class OverallCost {
 	}
 	
 	public OverallCost(int maxVehic, int numVehicDays, TreeMap<Integer, Integer> toolUsageMap, long distance,
-			DataContoller data) {
+			DataController data) {
 		this.maxVehicle = maxVehic;
 		this.numVehicleDays = numVehicDays;
 		this.toolUsageMap = toolUsageMap;
@@ -38,8 +38,8 @@ public class OverallCost {
 		calcTotalCost(data);
 	}
 
-	
-	public long calcTotalCost(DataContoller data) {
+
+	public long calcTotalCost(DataController data) {
 		long ret = totalCost;
 		if(ret == TOTAL_COST_DEFAULT) {			
 			ret = 0;
