@@ -15,7 +15,7 @@ import data.Vehicle;
 import io.Reader;
 import io.Writer;
 import solver.BruteforceSolver;
-import solver.DebSolver;
+import solver.CarmenTryingSolver;
 import solver.SimulatedAnnealingSolver;
 import solver.Solver;
 import solver.StupidSolver2;
@@ -32,7 +32,7 @@ public class Main {
 		File f = new File(filename);
 		DataController data = r.readFile(f);
 		
-		Solver stup = new DebSolver();
+		Solver stup = new CarmenTryingSolver();
 		StrategyController strat = stup.solve(data);
 		
 		//Writer w = new Writer();
