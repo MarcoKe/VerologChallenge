@@ -1,8 +1,12 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
+import data.VehicleAction.Action;
 
 public class Placement {
 	private Map<Request, Integer> placement; 
@@ -25,5 +29,22 @@ public class Placement {
 	
 	public Map<Request, Integer> getPlacement() {
 		return placement; 
+	}
+	
+	public Map<Integer, List<VehicleAction>> getVehicleActionList() {
+		Map<Integer, List<VehicleAction>> actionsByDay = new TreeMap<>(); 
+		
+		for (Request r : placement.keySet()) {
+			int deliveryDay = placement.get(r);
+			int pickupDay = deliveryDay + r.getUsageTime(); 
+			
+			VehicleAction delivery = new VehicleAction(Action.LOAD_AND_DELIVER, r);
+		    actionsByDay.computeIfAbsent(deliveryDay, v -> new ArrayList<VehicleAction>()).add(delivery);
+
+			VehicleAction pickup = new VehicleAction(Action.PICK_UP, r); 
+			actionsByDay.computeIfAbsent(pickupDay, v -> new ArrayList<VehicleAction>()).add(pickup);			
+			
+		}
+		return actionsByDay; 
 	}
 }

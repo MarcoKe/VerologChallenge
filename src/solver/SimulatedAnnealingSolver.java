@@ -8,9 +8,11 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import analysis.PlacementAnalyser;
+import analysis.RouteAnalyser;
 import data.DataController;
 import data.DayInformation;
 import data.Global;
@@ -27,48 +29,58 @@ public class SimulatedAnnealingSolver implements Solver {
 	private boolean debug = true; // TODO: remove once done 
 	private Map<Integer, DayInformation> days;
 	private DataController data; 
+	private PlacementAnalyser placementAnalyser;
+	private RouteAnalyser routeAnalyser;
 	
 	
 	public StrategyController solve(DataController data) {
 		this.data = data; 
-		// find some (non-feasible) placement 
-		List<Request> requests = data.getRequestList(); 
-		Map<Request, Integer> placement = new HashMap<>(); 
-		
-		for (Request request : requests) {
-			placement.put(request, request.getStartTime()); 
-		}
-		
-		Placement p = new Placement(placement);
+		// find some (non-feasible) placement 		
+		Placement p = stupidPlacement(data);
 		
 		// apply simulated annealing to hopefully make it feasible  
-		p = simulatedAnnealing(data, p); 
+		System.out.println("first try (matchings not taken into acount):");
+		placementAnalyser = new PlacementAnalyser(data); 
+		p = simulatedAnnealing(data, p, 10000, 0.001, this::noReuseEnergyFunction); 
+		
+		System.out.println("second try: ");
+		routeAnalyser = new RouteAnalyser(data); 
+		p = simulatedAnnealing(data,p, 10000, 0.001, this::reuseEnergyFunction);
 				
 		return route(p);
 		
 	}
+	
+	/*
+	 * computes constraint violations by performing a simple routing that tries to find matches
+	 */
+	public int reuseEnergyFunction(Placement p) {
+		return routeAnalyser.getConstraintViolations(route(p));
+	}
+	
+	/*
+	 * computes constraint violations just in terms of placement (can't take tool reuse into account)
+	 */
+	public int noReuseEnergyFunction(Placement p) {
+		return placementAnalyser.getConstraintViolations(p);
+	}
 		
-	public Placement simulatedAnnealing(DataController data, Placement stupidPlacement) {
-		PlacementAnalyser analyser = new PlacementAnalyser(data); 
-		
-		double temperature = 10000; 
-		double coolingRate = 0.001; 		
-		
-		Map<Request, Integer> currentPlacement = stupidPlacement.getPlacement();
+	public Placement simulatedAnnealing(DataController data, Placement initialPlacement, double temperature, double coolingRate, Function<Placement, Integer> energyFunc) {
+		Map<Request, Integer> currentPlacement = initialPlacement.getPlacement();
 		Map<Request, Integer> bestPlacement = new HashMap<>(currentPlacement);
+		int counter = 0; 
+		int bestEnergy = energyFunc.apply(new Placement(currentPlacement));
 		
 		if (debug) {
-			System.out.println("initial constraint violations: " + analyser.getConstraintViolations(new Placement(currentPlacement)));
+			System.out.println("initial constraint violations: " + bestEnergy);
 			System.out.println("initialBest (hash): " + bestPlacement.hashCode());
-		}
-				
-		
-		int counter = 0; 
-		while (temperature > 1.0) {
+		}		
+
+		while (temperature > 1.0 && bestEnergy > 0) {
 			if (debug) counter++; 
 			Map<Request, Integer> newPlacement = new HashMap<>(currentPlacement);
 			
-			// get random request
+			// make modification to current solution (take random request and move it ta a new random day)
 			Object[] keys = newPlacement.keySet().toArray();
 			Request randomRequest = (Request) keys[new Random().nextInt(keys.length)];
 			
@@ -76,15 +88,18 @@ public class SimulatedAnnealingSolver implements Solver {
 		
 			newPlacement.put(randomRequest, randomDay);
 			
-			int currentEnergy = analyser.getConstraintViolations(new Placement(currentPlacement)); 
-			int newEnergy = analyser.getConstraintViolations(new Placement(newPlacement));
+			// evaluate modified solution
+			int currentEnergy = energyFunc.apply(new Placement(currentPlacement)); 
+			int newEnergy = energyFunc.apply(new Placement(newPlacement));
 			
 			if (acceptanceProb(currentEnergy, newEnergy, temperature) > Math.random()) {
 				currentPlacement = newPlacement; 
+				currentEnergy = newEnergy;
 			}
 			
-			if (analyser.getConstraintViolations(new Placement(currentPlacement)) < analyser.getConstraintViolations(new Placement(bestPlacement))) {
-				bestPlacement = currentPlacement; 				
+			if (currentEnergy < bestEnergy) {
+				bestPlacement = currentPlacement; 	
+				bestEnergy = currentEnergy; 
 			}
 			
 			temperature *= 1-coolingRate; 
@@ -92,11 +107,11 @@ public class SimulatedAnnealingSolver implements Solver {
 		
 		if (debug) {
 			System.out.println(counter + " iterations");
-			System.out.println("final constraint violations: " + analyser.getConstraintViolations(new Placement(bestPlacement)));
+			System.out.println("final constraint violations: " + bestEnergy);
 			System.out.println("finalBest (hash): " + bestPlacement.hashCode());
 		}
 		return new Placement(bestPlacement); 
-	}
+	}	
 	
 	public double acceptanceProb(int energy, int newEnergy, double temperature) {        
         if (newEnergy < energy) 
