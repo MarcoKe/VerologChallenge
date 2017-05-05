@@ -15,6 +15,7 @@ import data.Vehicle;
 import io.Reader;
 import io.Writer;
 import solver.BruteforceSolver;
+import solver.CarmenTryingSolver;
 import solver.SimulatedAnnealingSolver;
 import solver.Solver;
 import solver.StupidSolver2;
@@ -23,7 +24,7 @@ import solver.StupidSolver3;
 public class Main {
 	public static void main(String[] args) {
 		
-		String filename = "data/ORTEC_Test/ORTEC_Test_01.txt";
+		String filename = "data/ORTEC_Test/ORTEC_Test_02.txt";
 		if (args.length > 0) {
 			filename = args[0]; 
 		}
@@ -31,11 +32,11 @@ public class Main {
 		File f = new File(filename);
 		DataController data = r.readFile(f);
 		
-		Solver stup = new StupidSolver3();
+		Solver stup = new CarmenTryingSolver();
 		StrategyController strat = stup.solve(data);
 		
-		Writer w = new Writer();
-		w.write(data, strat, filename);
+		//Writer w = new Writer();
+		//w.write(data, strat, filename);
 		
 	}
 }
