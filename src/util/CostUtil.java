@@ -11,7 +11,6 @@ import data.Location;
 import data.DataController;
 
 import data.OverallCost;
-import data.Request;
 import data.StrategyController;
 import data.Tool;
 import data.VehicleAction;
@@ -34,9 +33,6 @@ public class CostUtil {
 		}
 		
 		//TreeMap<Integer,Integer > maxToolUsage = new TreeMap<>(); // max number of Tool that had been on the road on same day
-		
-		
-		
 		
 		long distance = 0;
 		List<DayInformation> dayList = strat.getDays();
@@ -64,7 +60,7 @@ public class CostUtil {
 				VehicleAction prevAction = null;
 				VehicleAction currAction = route.size() > 0 ? route.get(0) : null;
 				Location prevLocation = null;
-				Location currLocation = getLocation(data, currAction);
+				Location currLocation = DataUtil.getActionLocation(data, currAction);
 				
 				addActionPartCost(currAction, vehiclePartCost);
 				//addDayToolUsage(currAction, dayToolUsage);
@@ -72,7 +68,7 @@ public class CostUtil {
 					prevAction = currAction;
 					currAction = route.get(i);
 					prevLocation = currLocation;
-					currLocation = getLocation(data, currAction); 
+					currLocation = DataUtil.getActionLocation(data, currAction); 
 					distance += data.getGlobal().computeDistance(prevLocation, currLocation);
 					
 					addActionPartCost(currAction, vehiclePartCost);
@@ -113,20 +109,6 @@ public class CostUtil {
 		return ret;
 	}
 
-	/**
-	 * Get Location of given VehicleAction
-	 * 
-	 * @param data
-	 * @param action
-	 * @return Location of given action or Location of Depot if action is NULL
-	 */
-	private static Location getLocation(DataController data, VehicleAction action) {
-		Location ret = data.getDepot().getLocation();
-		if (action != null && action.getVehicleAction() != Action.TO_DEPOT) {
-			ret = action.getRequest().getLocation();
-		}
-		return ret;
-	}
 	
 	private static void addActionPartCost( VehicleAction action, TreeMap<Integer,Integer> dayToolUsage){
 		if(action == null || action.getVehicleAction() == Action.TO_DEPOT){
