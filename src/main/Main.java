@@ -24,7 +24,7 @@ import solver.StupidSolver3;
 public class Main {
 	public static void main(String[] args) {
 		
-		String filename = "data/ORTEC_Test/ORTEC_Test_02.txt";
+		String filename = "data/ORTEC_Test/ORTEC_Test_01.txt";
 		if (args.length > 0) {
 			filename = args[0]; 
 		}
