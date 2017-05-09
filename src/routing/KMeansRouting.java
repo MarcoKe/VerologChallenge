@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import data.DataController;
 import data.VehicleAction;
+import data.VehicleInformation;
 
 public class KMeansRouting implements Routing{
 	
@@ -20,8 +21,8 @@ public class KMeansRouting implements Routing{
 	}
 
 	
-	public List<List<VehicleAction>> getRouting(DataController data, List<VehicleAction> dataSet) {
-		List<List<VehicleAction>> ret = null;
+	public List<VehicleInformation> getRouting(DataController data, List<VehicleAction> dataSet,List<MandatoryConnection> conLoc) {
+		List<VehicleInformation> ret = null;
 		boolean foundSolution = false;
 		int k = 1;
 		while(!foundSolution){

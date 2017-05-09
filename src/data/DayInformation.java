@@ -23,6 +23,10 @@ public class DayInformation {
 		vehicList.add(info);
 	}
 	
+	public void addAllVehickeInformation(List<VehicleInformation> infoList){
+		vehicList.addAll(infoList);
+	}
+	
 	public List<VehicleInformation> getVehicleInformationList(){
 		return vehicList;
 	}
