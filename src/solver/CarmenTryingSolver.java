@@ -12,6 +12,7 @@ import data.Location;
 import data.Request;
 import data.StrategyController;
 import data.Tool;
+import data.Vehicle;
 
 public class CarmenTryingSolver implements Solver {
 
@@ -20,6 +21,7 @@ public class CarmenTryingSolver implements Solver {
 
 	List<Request> notUsedYetList;
 	List<Request> requests;
+	Vehicle vehicles;
 	List<Tool> tools;
 	List<List<Request>> requestsLists;
 	List<Request> list;
@@ -42,6 +44,7 @@ public class CarmenTryingSolver implements Solver {
 
 	Map<Request, Integer> toolUsedByRequest;
 	
+	int maxdistance;
 	
 
 	public CarmenTryingSolver() {
@@ -51,6 +54,10 @@ public class CarmenTryingSolver implements Solver {
 	public StrategyController solve(DataController data) {
 
 		requests = data.getRequestList();
+		
+		vehicles = data.getVehicle();
+		
+		maxdistance = vehicles.getMaxDistance(); 
 
 		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getEndTime(), o2.getEndTime()));
 
@@ -165,12 +172,13 @@ public class CarmenTryingSolver implements Solver {
 
 	public void placingTools() {
 
-
+		int t = 0;
+		
 		for (int i = 0; i < maxOverlappingList.size(); i++) {
 
 			for (int j = 1; j <= maxOverlappingList.get(i).getAmountOfTools(); j++) {
 
-				for (int t = 1; t <= lastTimeToolUsedList.length; t++) {
+				for (t = 1; t <= lastTimeToolUsedList.length; t++) {
 
 					if (lastTimeToolUsedList[t] == null) {
 
@@ -193,8 +201,12 @@ public class CarmenTryingSolver implements Solver {
 						continue;
 					}
 
-					else if (possition.get(lastTimeToolUsedList[t])
-							+ lastTimeToolUsedList[t].getUsageTime() <= maxOverlappingList.get(i).getEndTime()) {
+					else if ((possition.get(lastTimeToolUsedList[t])
+							+ lastTimeToolUsedList[t].getUsageTime() <= maxOverlappingList.get(i).getEndTime())
+							&& ((int) Math.sqrt(Math.pow(lastTimeToolUsedList[t].getLocation().getX() - 
+									maxOverlappingList.get(i).getLocation().getX(),2) +
+									Math.pow((lastTimeToolUsedList[t].getLocation().getY() -
+											maxOverlappingList.get(i).getLocation().getY()),2)) <= maxdistance )) {
 
 						if (possition.containsKey(maxOverlappingList.get(i))) {
 
@@ -215,12 +227,11 @@ public class CarmenTryingSolver implements Solver {
 					}
 
 				}
-
-			}
 			
-			System.out.println("ID: " + maxOverlappingList.get(i).getId() + " Starting possition: " + 
+			System.out.println("ID: " + maxOverlappingList.get(i).getId() + " tool used: " + t + " Starting possition: " + 
 					possition.get(maxOverlappingList.get(i)) + " Ending time: " +  
 							(possition.get(maxOverlappingList.get(i)) + maxOverlappingList.get(i).getUsageTime()) );
+			}
 		}
 
 	}
