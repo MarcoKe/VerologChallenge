@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import data.DataController;
 import data.Location;
+import data.Placement;
 import data.Request;
 import data.StrategyController;
 import data.Tool;
@@ -165,9 +166,16 @@ public class CarmenTryingSolver implements Solver {
 			
 			System.out.println("-------------------------NEW LIST------------------------ ");
 		}
+		
+		new Placement(possition);
 
 		return null;
 
+	}
+	
+	public void putall()
+	{
+		
 	}
 
 	public void placingTools() {
