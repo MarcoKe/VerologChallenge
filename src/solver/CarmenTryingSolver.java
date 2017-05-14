@@ -47,6 +47,8 @@ public class CarmenTryingSolver implements Solver {
 	
 	int maxdistance;
 	
+	Placement placement = new Placement();
+	
 
 	public CarmenTryingSolver() {
 
@@ -94,6 +96,7 @@ public class CarmenTryingSolver implements Solver {
 			lastTimeToolUsedList = new Request[toolsAvailable];
 			
 			possition = new HashMap<>();
+			
 
 			toolUsedByRequest = new HashMap<>();
 
@@ -165,9 +168,12 @@ public class CarmenTryingSolver implements Solver {
 			}
 			
 			System.out.println("-------------------------NEW LIST------------------------ ");
+			
+			//placement = new Placement(possition);
+			
+			placement.add(possition);
+			System.out.println("SIZE: " + placement.getPlacement().keySet().size());
 		}
-		
-		new Placement(possition);
 
 		return null;
 

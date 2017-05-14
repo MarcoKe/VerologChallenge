@@ -11,6 +11,10 @@ import data.VehicleAction.Action;
 public class Placement {
 	private Map<Request, Integer> placement; 
 	
+	public Placement() {
+		placement = new HashMap<>();
+	}
+	
 	public Placement(Map<Request, Integer> placement) {
 		this.placement = placement; 
 	}
@@ -31,6 +35,12 @@ public class Placement {
 		return placement; 
 	}
 	
+	public void add(Map<Request, Integer> additional) {
+		for (Request r : additional.keySet()) {
+			placement.put(r, additional.get(r)); 
+		}
+	}
+	
 	public Map<Integer, List<VehicleAction>> getVehicleActionList() {
 		Map<Integer, List<VehicleAction>> actionsByDay = new TreeMap<>(); 
 		
@@ -45,6 +55,7 @@ public class Placement {
 			actionsByDay.computeIfAbsent(pickupDay, v -> new ArrayList<VehicleAction>()).add(pickup);			
 			
 		}
+		
 		return actionsByDay; 
 	}
 }
