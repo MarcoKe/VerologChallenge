@@ -71,6 +71,8 @@ public class CarmenTryingSolver implements Solver {
 		for (Tool tool : data.getToolList()) {
 
 			list = requests.stream().filter(r -> r.getTool().getId() == tool.getId()).collect(Collectors.toList());
+			
+			System.out.println("SIZE: " + list.size());
 
 			requestsLists.add(list);
 
@@ -84,8 +86,6 @@ public class CarmenTryingSolver implements Solver {
 		
 
 		for (List<Request> list : requestsLists) {
-			
-			System.out.println("Size: " + list.size());
 
 			notUsedYetList = list;
 			
@@ -145,15 +145,10 @@ public class CarmenTryingSolver implements Solver {
 						maxOverlappingList = overlappingList;
 
 					}
-					
-
-	
 				}
 				
-				
 				placingTools();
-	
-			
+
 
 				for (int i = 0; i < maxOverlappingList.size(); i++) {
 				
@@ -162,14 +157,9 @@ public class CarmenTryingSolver implements Solver {
 					
 				}
 
-
-
-
 			}
 			
 			System.out.println("-------------------------NEW LIST------------------------ ");
-			
-			//placement = new Placement(possition);
 			
 			placement.add(possition);
 			System.out.println("SIZE: " + placement.getPlacement().keySet().size());
@@ -216,7 +206,9 @@ public class CarmenTryingSolver implements Solver {
 					}
 
 					else if ((possition.get(lastTimeToolUsedList[t])
-							+ lastTimeToolUsedList[t].getUsageTime() <= maxOverlappingList.get(i).getEndTime())
+							+ lastTimeToolUsedList[t].getUsageTime() >= maxOverlappingList.get(i).getStartTime()) &&
+							(possition.get(lastTimeToolUsedList[t]) + 
+									lastTimeToolUsedList[t].getUsageTime() <= maxOverlappingList.get(i).getEndTime())
 							&& ((int) Math.sqrt(Math.pow(lastTimeToolUsedList[t].getLocation().getX() - 
 									maxOverlappingList.get(i).getLocation().getX(),2) +
 									Math.pow((lastTimeToolUsedList[t].getLocation().getY() -
