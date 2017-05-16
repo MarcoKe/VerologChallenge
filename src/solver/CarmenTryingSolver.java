@@ -1,19 +1,30 @@
 package solver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import data.DataController;
+import data.DayInformation;
 import data.Location;
 import data.Placement;
 import data.Request;
 import data.StrategyController;
 import data.Tool;
 import data.Vehicle;
+import data.VehicleAction;
+import data.VehicleInformation;
+import routing.MandatoryConnection;
+import routing.Routing;
+import routing.SimpleRouting;
+import data.VehicleAction.Action;
 
 public class CarmenTryingSolver implements Solver {
 
@@ -28,7 +39,7 @@ public class CarmenTryingSolver implements Solver {
 	List<Request> list;
 	List<Request> overlappingList;
 	List<Request> maxOverlappingList;
-
+	
 
 	int count;
 	int toolCount;
@@ -43,7 +54,13 @@ public class CarmenTryingSolver implements Solver {
 	
 	Map<Request, Integer> possition;
 
-	Map<Request, Integer> toolUsedByRequest;
+	Map<Request, List<Integer>> toolUsedByRequest;
+	
+	Map<Integer, List<Request>> deliverDay;
+	
+	Map<Integer,List<Request>> pickUpDay;
+	
+	Map<Integer, List<MandatoryConnection>> manConDay;
 	
 	int maxdistance;
 	
@@ -71,8 +88,6 @@ public class CarmenTryingSolver implements Solver {
 		for (Tool tool : data.getToolList()) {
 
 			list = requests.stream().filter(r -> r.getTool().getId() == tool.getId()).collect(Collectors.toList());
-			
-			System.out.println("SIZE: " + list.size());
 
 			requestsLists.add(list);
 
@@ -83,7 +98,12 @@ public class CarmenTryingSolver implements Solver {
 
 		notUsedYetList = new ArrayList<Request>();
 		
+		deliverDay = new HashMap<>();
 		
+		pickUpDay = new HashMap<>();
+		
+		manConDay = new HashMap<>();
+
 
 		for (List<Request> list : requestsLists) {
 
@@ -97,7 +117,6 @@ public class CarmenTryingSolver implements Solver {
 			
 			possition = new HashMap<>();
 			
-
 			toolUsedByRequest = new HashMap<>();
 
 			while (notUsedYetList.isEmpty() == false) {
@@ -162,16 +181,49 @@ public class CarmenTryingSolver implements Solver {
 			System.out.println("-------------------------NEW LIST------------------------ ");
 			
 			placement.add(possition);
-			System.out.println("SIZE: " + placement.getPlacement().keySet().size());
+
 		}
-
-		return null;
-
-	}
-	
-	public void putall()
-	{
 		
+		List<DayInformation> dayInfoList = new LinkedList<>();
+
+		Set<Integer> workDays = new TreeSet<>();
+		workDays.addAll(deliverDay.keySet());
+		workDays.addAll(pickUpDay.keySet());
+		
+		for(int day : workDays){
+			System.out.println(day);
+			DayInformation dayInfo = new DayInformation(day);
+			List<VehicleAction> simpleLoc= new LinkedList<>();
+			List<Request> deliver = deliverDay.get(day);
+			List<Request> pickup = pickUpDay.get(day);
+			
+			List<MandatoryConnection> manConsList = new ArrayList<>();
+			
+			if(deliver !=null){
+				for(Request req: deliver){
+					simpleLoc.add(new VehicleAction(Action.LOAD_AND_DELIVER, req));
+				}
+			}
+			if(pickup != null){
+				for(Request req: pickup){
+					
+					simpleLoc.add(new VehicleAction(Action.PICK_UP, req));
+				}
+			}
+			
+			Routing routing = new SimpleRouting();
+			List<VehicleInformation> infoList = routing.getRouting(data, simpleLoc, null);
+			dayInfo.addAllVehickeInformation(infoList);
+			dayInfoList.add(dayInfo);
+		}
+		
+		
+
+		StrategyController strat = new StrategyController(dayInfoList);
+		
+		return strat;
+		
+
 	}
 
 	public void placingTools() {
@@ -179,51 +231,51 @@ public class CarmenTryingSolver implements Solver {
 		int t = 0;
 		
 		for (int i = 0; i < maxOverlappingList.size(); i++) {
-
-			for (int j = 1; j <= maxOverlappingList.get(i).getAmountOfTools(); j++) {
+			Request req = maxOverlappingList.get(i);
+			toolUsedByRequest.put(req, new ArrayList<>());
+			
+			for (int j = 1; j <= req.getAmountOfTools(); j++) {
 
 				for (t = 1; t <= lastTimeToolUsedList.length; t++) {
 
 					if (lastTimeToolUsedList[t] == null) {
 
-						if (possition.containsKey(maxOverlappingList.get(i))) {
+						if (!possition.containsKey(req)) {
+							possition.put(req, req.getStartTime());
 
 						}
-						else {
-							possition.put(maxOverlappingList.get(i), maxOverlappingList.get(i).getStartTime());
-							
-						}
 
-						toolUsedByRequest.put(maxOverlappingList.get(i), t);
+						toolUsedByRequest.get(req).add(t);
+						//toolUsedByRequest.put(req, temp);
 
-						lastTimeToolUsedList[t] = maxOverlappingList.get(i);
+						lastTimeToolUsedList[t] = req;
 
 						break;
 					}
 
-					else if (lastTimeToolUsedList[t] == maxOverlappingList.get(i)) {
+					else if (lastTimeToolUsedList[t] == req) {
 						continue;
 					}
 
 					else if ((possition.get(lastTimeToolUsedList[t])
-							+ lastTimeToolUsedList[t].getUsageTime() >= maxOverlappingList.get(i).getStartTime()) &&
+							+ lastTimeToolUsedList[t].getUsageTime() >= req.getStartTime()) &&
 							(possition.get(lastTimeToolUsedList[t]) + 
-									lastTimeToolUsedList[t].getUsageTime() <= maxOverlappingList.get(i).getEndTime())
+									lastTimeToolUsedList[t].getUsageTime() <= req.getEndTime())
 							&& ((int) Math.sqrt(Math.pow(lastTimeToolUsedList[t].getLocation().getX() - 
-									maxOverlappingList.get(i).getLocation().getX(),2) +
+									req.getLocation().getX(),2) +
 									Math.pow((lastTimeToolUsedList[t].getLocation().getY() -
-											maxOverlappingList.get(i).getLocation().getY()),2)) <= maxdistance )) {
+											req.getLocation().getY()),2)) <= maxdistance )) {
 
-						if (possition.containsKey(maxOverlappingList.get(i))) {
-
-						} else {
-							possition.put(maxOverlappingList.get(i),
+						if (!possition.containsKey(req)) {
+							
+							possition.put(req,
 									possition.get(lastTimeToolUsedList[t]) + lastTimeToolUsedList[t].getUsageTime());
 						}
 
-						toolUsedByRequest.put(maxOverlappingList.get(i), t);
+						toolUsedByRequest.get(req).add(t);
+						
 
-						lastTimeToolUsedList[t] = maxOverlappingList.get(i);
+						lastTimeToolUsedList[t] = req;
 
 						break;
 					}
@@ -233,11 +285,41 @@ public class CarmenTryingSolver implements Solver {
 					}
 
 				}
+				
+				
 			
-			System.out.println("ID: " + maxOverlappingList.get(i).getId() + " tool used: " + t + " Starting possition: " + 
-					possition.get(maxOverlappingList.get(i)) + " Ending time: " +  
-							(possition.get(maxOverlappingList.get(i)) + maxOverlappingList.get(i).getUsageTime()) );
+//			System.out.println("ID: " + req.getId() + " tool used: " + t + " Starting possition: " + 
+//					possition.get(req) + " Ending time: " +  
+//							(possition.get(req) + req.getUsageTime()) );
 			}
+			
+			int delDay = possition.get(req);
+			
+			
+			
+			System.out.println("Req: " + req.getId() +" " +Arrays.toString(toolUsedByRequest.get(req).toArray()));
+			
+			List<Request> deliverList = deliverDay.get(delDay);
+			if(deliverList == null)
+			{
+				deliverList = new ArrayList<>();
+			}
+			
+			deliverList.add(req);
+			deliverDay.put(delDay,deliverList);
+			
+			int pickDay = delDay + req.getUsageTime();
+			List<Request> pickUpList = pickUpDay.get(pickDay);
+			if(pickUpList == null)
+			{
+				pickUpList = new ArrayList<>();
+			}
+			
+			pickUpList.add(req);
+			pickUpDay.put(pickDay,deliverList);
+			
+			
+			
 		}
 
 	}
