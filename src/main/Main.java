@@ -35,8 +35,8 @@ public class Main {
 		Solver stup = new CarmenTryingSolver();
 		StrategyController strat = stup.solve(data);
 		
-		//Writer w = new Writer();
-		//w.write(data, strat, filename);
+		Writer w = new Writer();
+		w.write(data, strat, filename);
 		
 	}
 }

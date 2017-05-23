@@ -72,6 +72,7 @@ public class CarmenTryingSolver implements Solver {
 	}
 
 	public StrategyController solve(DataController data) {
+		this.data = data;
 
 		requests = data.getRequestList();
 		
@@ -109,11 +110,10 @@ public class CarmenTryingSolver implements Solver {
 
 			notUsedYetList = list;
 			
-			toolsAvailable = list.get(1).getTool().getMaxAvailable();
+			toolsAvailable = list.get(0).getTool().getMaxAvailable();
 			
 			maxOverlapsId = 0;
 			
-			lastTimeToolUsedList = new Request[toolsAvailable];
 			
 			possition = new HashMap<>();
 			
@@ -126,6 +126,8 @@ public class CarmenTryingSolver implements Solver {
 
 				for (int i = 0; i < notUsedYetList.size(); i++) {
 
+					Request reqI = notUsedYetList.get(i);
+					int endTimeI = reqI.getEndTime() + reqI.getUsageTime() + 1;
 					countk = 0;
 
 
@@ -133,22 +135,24 @@ public class CarmenTryingSolver implements Solver {
 
 					// Getting the number of overlaps (clique)
 					for (int k = 0; k < notUsedYetList.size(); k++) {
+							Request reqK = notUsedYetList.get(k);
 
+							int endTimeK = reqK.getEndTime() + reqK.getUsageTime() + 1;
 
-							if (notUsedYetList.get(i).getEndTime() <= notUsedYetList.get(k).getEndTime()) {
-								if (notUsedYetList.get(i).getEndTime() - notUsedYetList.get(k).getStartTime() >= 0) {
+							if (endTimeI  <= endTimeK) {
+								if (endTimeI - reqK.getStartTime() >= 0) {
 
 									countk++;
 
-									overlappingList.add(notUsedYetList.get(k));
+									overlappingList.add(reqK);
 
 								}
 							} else {
-								if (notUsedYetList.get(k).getEndTime() - notUsedYetList.get(i).getStartTime() >= 0) {
+								if (endTimeK - reqI.getStartTime() >= 0) {
 
 									countk++;
 
-									overlappingList.add(notUsedYetList.get(k));
+									overlappingList.add(reqK);
 								}
 							}
 
@@ -159,7 +163,7 @@ public class CarmenTryingSolver implements Solver {
 
 						maxoverlaps = countk;
 
-						maxOverlapsId = notUsedYetList.get(i).getId();
+						maxOverlapsId = reqI.getId();
 
 						maxOverlappingList = overlappingList;
 
@@ -167,14 +171,13 @@ public class CarmenTryingSolver implements Solver {
 				}
 				
 				placingTools();
-
-
-				for (int i = 0; i < maxOverlappingList.size(); i++) {
-				
-					
-					notUsedYetList.remove(maxOverlappingList.get(i));
-					
-				}
+				notUsedYetList.removeAll(maxOverlappingList);
+//				for (int i = 0; i < maxOverlappingList.size(); i++) {
+//				
+//					
+//					notUsedYetList.remove(maxOverlappingList.get(i));
+//					
+//				}
 
 			}
 			
@@ -189,36 +192,43 @@ public class CarmenTryingSolver implements Solver {
 		Set<Integer> workDays = new TreeSet<>();
 		workDays.addAll(deliverDay.keySet());
 		workDays.addAll(pickUpDay.keySet());
+		workDays.addAll(manConDay.keySet());
 		
 		for(int day : workDays){
-			System.out.println(day);
+			System.out.println("day "+day);
 			DayInformation dayInfo = new DayInformation(day);
 			List<VehicleAction> simpleLoc= new LinkedList<>();
 			List<Request> deliver = deliverDay.get(day);
 			List<Request> pickup = pickUpDay.get(day);
 			
-			List<MandatoryConnection> manConsList = new ArrayList<>();
+			List<MandatoryConnection> manConsList = manConDay.get(day);
+			if(manConsList == null){
+				manConsList = new ArrayList<>();
+			}
+			
 			
 			if(deliver !=null){
 				for(Request req: deliver){
 					simpleLoc.add(new VehicleAction(Action.LOAD_AND_DELIVER, req));
 				}
+				System.out.println("deliver size "+ deliver.size());
 			}
 			if(pickup != null){
-				for(Request req: pickup){
-					
+				for(Request req: pickup){				
 					simpleLoc.add(new VehicleAction(Action.PICK_UP, req));
 				}
+				System.out.println("pickup size "+ pickup.size());
+
 			}
 			
 			Routing routing = new SimpleRouting();
-			List<VehicleInformation> infoList = routing.getRouting(data, simpleLoc, null);
+			System.out.println("simple "+simpleLoc.size());
+			System.out.println("manCons "+manConsList.size());
+			List<VehicleInformation> infoList = routing.getRouting(data, simpleLoc, manConsList);
+			System.out.println("infoList "+infoList.size());
 			dayInfo.addAllVehickeInformation(infoList);
 			dayInfoList.add(dayInfo);
 		}
-		
-		
-
 		StrategyController strat = new StrategyController(dayInfoList);
 		
 		return strat;
@@ -226,28 +236,33 @@ public class CarmenTryingSolver implements Solver {
 
 	}
 
+	/**
+	 * 
+	 */
 	public void placingTools() {
-
 		int t = 0;
 		
+		lastTimeToolUsedList = new Request[toolsAvailable];
+
 		for (int i = 0; i < maxOverlappingList.size(); i++) {
 			Request req = maxOverlappingList.get(i);
 			toolUsedByRequest.put(req, new ArrayList<>());
+			t = 0;
 			
-			for (int j = 1; j <= req.getAmountOfTools(); j++) {
+			for (int j = 0; j < req.getAmountOfTools(); j++) {
 
-				for (t = 1; t <= lastTimeToolUsedList.length; t++) {
+				for (t = 0; t < lastTimeToolUsedList.length; t++) {
 
 					if (lastTimeToolUsedList[t] == null) {
 
 						if (!possition.containsKey(req)) {
 							possition.put(req, req.getStartTime());
 
-						}
-
+						}						
+						addRequestToDeliveryDay(req);
+						addRequestToPickupDay(req);
+						
 						toolUsedByRequest.get(req).add(t);
-						//toolUsedByRequest.put(req, temp);
-
 						lastTimeToolUsedList[t] = req;
 
 						break;
@@ -257,75 +272,131 @@ public class CarmenTryingSolver implements Solver {
 						continue;
 					}
 
-					else if ((possition.get(lastTimeToolUsedList[t])
-							+ lastTimeToolUsedList[t].getUsageTime() >= req.getStartTime()) &&
-							(possition.get(lastTimeToolUsedList[t]) + 
-									lastTimeToolUsedList[t].getUsageTime() <= req.getEndTime())
-							&& ((int) Math.sqrt(Math.pow(lastTimeToolUsedList[t].getLocation().getX() - 
-									req.getLocation().getX(),2) +
-									Math.pow((lastTimeToolUsedList[t].getLocation().getY() -
-											req.getLocation().getY()),2)) <= maxdistance )) {
+					else if ((getPickupDay(lastTimeToolUsedList[t]) >= req.getStartTime()) &&
+							(getPickupDay(lastTimeToolUsedList[t])<= req.getEndTime()) &&
+							(data.getGlobal().computeDistance(req.getLocation(), lastTimeToolUsedList[t].getLocation())
+							<= maxdistance)) {
 
 						if (!possition.containsKey(req)) {
-							
-							possition.put(req,
-									possition.get(lastTimeToolUsedList[t]) + lastTimeToolUsedList[t].getUsageTime());
+							possition.put(req, getPickupDay(lastTimeToolUsedList[t]));
 						}
 
+						addRequestToManConDay(lastTimeToolUsedList[t], req);
+						addRequestToPickupDay(req);
 						toolUsedByRequest.get(req).add(t);
-						
-
 						lastTimeToolUsedList[t] = req;
 
 						break;
 					}
-
-					else {
-						continue;
+					else if(t == lastTimeToolUsedList.length-1){
+						System.out.println("no tool found");
 					}
 
 				}
-				
-				
-			
-//			System.out.println("ID: " + req.getId() + " tool used: " + t + " Starting possition: " + 
-//					possition.get(req) + " Ending time: " +  
-//							(possition.get(req) + req.getUsageTime()) );
+
+			System.out.print("ID: " + req.getId()+ " Tool ID "+req.getTool().getId()+" tool used: " + t + " Starting possition: " + 
+					possition.get(req) );
+			System.out.println(" Ending time: " +  
+							getPickupDay(req) );
 			}
+		}
+
+	}
+	
+	
+	public void addRequestToDeliveryDay(Request req){
+		int delDay = possition.get(req);
+		boolean reqNotInManCon = true;
+		List<MandatoryConnection> manConList = manConDay.get(delDay);
+		if(manConList != null){
+			MandatoryConnection tmp = getConnectionOfRequest(manConList, null, req);
+			if(tmp != null){
+				reqNotInManCon = false;
+			}
+		}
 			
-			int delDay = possition.get(req);
-			
-			
-			
-			System.out.println("Req: " + req.getId() +" " +Arrays.toString(toolUsedByRequest.get(req).toArray()));
-			
+				
+		if(reqNotInManCon){
 			List<Request> deliverList = deliverDay.get(delDay);
 			if(deliverList == null)
 			{
 				deliverList = new ArrayList<>();
+				deliverDay.put(delDay,deliverList);
 			}
-			
-			deliverList.add(req);
-			deliverDay.put(delDay,deliverList);
-			
-			int pickDay = delDay + req.getUsageTime();
-			List<Request> pickUpList = pickUpDay.get(pickDay);
-			if(pickUpList == null)
-			{
-				pickUpList = new ArrayList<>();
-			}
-			
-			pickUpList.add(req);
-			pickUpDay.put(pickDay,deliverList);
-			
-			
-			
+			if(!deliverList.contains(req)){
+				deliverList.add(req);			
+			}			
 		}
-
+		
+		
 	}
-
-	public void main(String args) {
-		solve(data);
+	
+	public void addRequestToPickupDay(Request req){
+		int pickDay = getPickupDay(req);
+		List<Request> pickupList = pickUpDay.get(pickDay);
+		if(pickupList == null)
+		{
+			pickupList = new ArrayList<>();
+			pickUpDay.put(pickDay,pickupList);					
+		}
+		
+		if(!pickupList.contains(req)){
+			pickupList.add(req);			
+		}
+	}
+	
+	public void addRequestToManConDay(Request pick, Request del){
+		int delDay = possition.get(del);
+		List<MandatoryConnection> manConList = manConDay.get(delDay);
+		if(manConList == null){
+			manConList = new ArrayList<>();
+			manConDay.put(delDay, manConList);
+		}
+		MandatoryConnection manCon = getConnectionOfRequest(manConList, pick, del);
+		if(manCon == null){
+			manCon = new MandatoryConnection();
+			manConList.add(manCon);
+		}
+		
+		manCon.addPickupList(pick);
+		manCon.addDeliverList(del);
+		
+		//TODO remove pick from pickupDay
+		List<Request> deliverList = deliverDay.get(delDay);
+		if(deliverList != null){
+			deliverList.remove(del);
+		}
+		List<Request> pickupList = pickUpDay.get(delDay);
+		if(pickupList != null)
+		{
+			pickupList.remove(pick);
+		}		
+	}
+	
+	
+	private MandatoryConnection getConnectionOfRequest (List<MandatoryConnection> manCon, Request pick, Request deliver ){
+		MandatoryConnection ret = null;
+		for(int i=0;i<manCon.size();++i){
+			List<VehicleAction> checkList = manCon.get(i).getPickupList();
+			for(VehicleAction action: checkList){
+				if(action.getRequest() == pick){
+					ret = manCon.get(i);
+					break;
+				}
+			}
+			checkList = manCon.get(i).getDeliverList();
+			for(VehicleAction action: checkList){
+				if(action.getRequest() == deliver){
+					ret = manCon.get(i);
+					break;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public int getPickupDay(Request req){
+		return possition.get(req) + req.getUsageTime()  ;
 	}
 
 }

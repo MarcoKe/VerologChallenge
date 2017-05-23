@@ -22,19 +22,44 @@ public class MandatoryConnection {
 	}
 	
 	public void addPickupList(VehicleAction pickup){
-		pickupList.add(pickup);
+		if(!pickupList.contains(pickup)){
+			pickupList.add(pickup);			
+		}
 	}
 	
 	public void addDeliverList(VehicleAction deliver){
-		deliverList.add(deliver);
+		if(!deliverList.contains(deliver)){
+			deliverList.add(deliver);			
+		}
 	}
 	
 	public void addPickupList(Request req){
-		pickupList.add(new VehicleAction(Action.PICK_UP,req));
+		boolean add = true;
+		for(VehicleAction action: pickupList){
+			if(action.getRequest() == req){
+				add=false;
+				break;
+			}
+		}
+		
+		if(add){
+			addPickupList(new VehicleAction(Action.PICK_UP,req));			
+		}
 	}
 	public void addDeliverList(Request req){
-		deliverList.add(new VehicleAction(Action.LOAD_AND_DELIVER,req));
+		boolean add = true;
+		for(VehicleAction action: deliverList){
+			if(action.getRequest() == req){
+				add=false;
+				break;
+			}
+		}
+		
+		if(add){
+			addDeliverList(new VehicleAction(Action.LOAD_AND_DELIVER,req));			
+		}
 	}
+	
 
 	public final List<VehicleAction> getPickupList() {
 		return pickupList;
