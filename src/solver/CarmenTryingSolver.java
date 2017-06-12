@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import data.DataController;
 import data.DayInformation;
+import data.Global;
 import data.Location;
 import data.Placement;
 import data.Request;
@@ -40,7 +41,6 @@ public class CarmenTryingSolver implements Solver {
 	List<Request> overlappingList;
 	List<Request> maxOverlappingList;
 	
-
 	int count;
 	int toolCount;
 
@@ -274,8 +274,9 @@ public class CarmenTryingSolver implements Solver {
 
 					else if ((getPickupDay(lastTimeToolUsedList[t]) >= req.getStartTime()) &&
 							(getPickupDay(lastTimeToolUsedList[t])<= req.getEndTime()) &&
-							(data.getGlobal().computeDistance(req.getLocation(), lastTimeToolUsedList[t].getLocation())
-							<= maxdistance)) {
+							(possibleTrip(lastTimeToolUsedList[t].getLocation(),req.getLocation()))) {
+//							(data.getGlobal().computeDistance(req.getLocation(), lastTimeToolUsedList[t].getLocation())
+//							<= maxdistance)) {
 
 						if (!possition.containsKey(req)) {
 							possition.put(req, getPickupDay(lastTimeToolUsedList[t]));
@@ -398,5 +399,20 @@ public class CarmenTryingSolver implements Solver {
 	public int getPickupDay(Request req){
 		return possition.get(req) + req.getUsageTime()  ;
 	}
-
+	public boolean possibleTrip(Location l1, Location l2) {
+		Vehicle vehicle = data.getVehicle();
+		
+		return (tripDistance(l1, l2) <= vehicle.getMaxDistance());
+	}
+	
+	public int tripDistance( Location l1, Location l2) {
+		Global g = data.getGlobal(); 
+		Location depot = data.getLocationList().get(0);
+		int distance = 0; 	
+		distance += g.computeDistance(depot, l1);
+		distance += g.computeDistance(l1, l2);
+		distance += g.computeDistance(l2, depot);
+		
+		return distance;
+	}
 }
