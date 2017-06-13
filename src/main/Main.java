@@ -15,6 +15,7 @@ import data.Vehicle;
 import io.Reader;
 import io.Writer;
 import solver.BruteforceSolver;
+import solver.CarmenSolverRebuild;
 import solver.CarmenTryingSolver;
 import solver.SimulatedAnnealingSolver;
 import solver.Solver;

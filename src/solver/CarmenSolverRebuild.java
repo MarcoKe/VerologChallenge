@@ -13,9 +13,12 @@ import java.util.stream.Collectors;
 
 import data.DataController;
 import data.DayInformation;
+import data.Global;
+import data.Location;
 import data.Request;
 import data.StrategyController;
 import data.Tool;
+import data.Vehicle;
 import data.VehicleAction;
 import data.VehicleInformation;
 import data.VehicleAction.Action;
@@ -32,10 +35,12 @@ public class CarmenSolverRebuild implements Solver {
 	private Map<Integer, List<Request>> pickUpDay;
 	private Map<Request, Integer> positions;
 	private List<Request> maxOverlappingList;
+	private DataController data;
 
 	@Override
 	public StrategyController solve(DataController data) {
 		// Divide requests into groups depending on the tool ID
+		this.data=data;
 		List<Request> requests = data.getRequestList();
 		List<List<Request>> requestsPerID = new ArrayList<List<Request>>();
 		Collections.sort(requests, (o1, o2) -> Integer.compare(o1.getEndTime(), o2.getEndTime()));
@@ -159,12 +164,13 @@ public class CarmenSolverRebuild implements Solver {
 							&& (positions.get(lastTimeToolUsedList[t])
 									+ lastTimeToolUsedList[t].getUsageTime() <= request
 											.getEndTime())
-							&& ((int) Math
-									.sqrt(Math
-											.pow(lastTimeToolUsedList[t].getLocation().getX()
-													- request.getLocation().getX(), 2)
-											+ Math.pow((lastTimeToolUsedList[t].getLocation().getY()
-													- request.getLocation().getY()), 2)) <= maxDistance)) {
+							&&(possibleTrip(lastTimeToolUsedList[t].getLocation(),request.getLocation()))) {
+//							&& ((int) Math
+//									.sqrt(Math
+//											.pow(lastTimeToolUsedList[t].getLocation().getX()
+//													- request.getLocation().getX(), 2)
+//											+ Math.pow((lastTimeToolUsedList[t].getLocation().getY()
+//													- request.getLocation().getY()), 2)) <= maxDistance)) {
 						if (!positions.containsKey(request)) {
 							positions.put(request,
 									positions.get(lastTimeToolUsedList[t]) + lastTimeToolUsedList[t].getUsageTime());
@@ -196,5 +202,21 @@ public class CarmenSolverRebuild implements Solver {
 			pickUpDay.put(pickDay, deliverList);
 		}
 	}
-
+	
+	public boolean possibleTrip(Location l1, Location l2) {
+		Vehicle vehicle = data.getVehicle();
+		
+		return (tripDistance(l1, l2) <= vehicle.getMaxDistance());
+	}
+	
+	public int tripDistance( Location l1, Location l2) {
+		Global g = data.getGlobal(); 
+		Location depot = data.getLocationList().get(0);
+		int distance = 0; 	
+		distance += g.computeDistance(depot, l1);
+		distance += g.computeDistance(l1, l2);
+		distance += g.computeDistance(l2, depot);
+		
+		return distance;
+	}
 }
