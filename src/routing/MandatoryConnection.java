@@ -17,9 +17,19 @@ public class MandatoryConnection {
 	}
 	
 	public MandatoryConnection(List<VehicleAction> pickUpList, List<VehicleAction> deliverList ){
-		this.pickupList = pickUpList;
-		this.deliverList = deliverList;
+		this.pickupList = new LinkedList<>(pickupList);
+		this.deliverList = new LinkedList<>(deliverList);
 	}
+	
+	public MandatoryConnection(MandatoryConnection manCon){
+		this.pickupList = new LinkedList<>();
+		this.deliverList = new LinkedList<>();
+		if(manCon != null){
+			this.pickupList.addAll(manCon.getPickupList());
+			this.deliverList.addAll(manCon.getDeliverList());			
+		}
+	}
+	
 	
 	public void addPickupList(VehicleAction pickup){
 		if(!pickupList.contains(pickup)){
@@ -40,8 +50,7 @@ public class MandatoryConnection {
 				add=false;
 				break;
 			}
-		}
-		
+		}		
 		if(add){
 			addPickupList(new VehicleAction(Action.PICK_UP,req));			
 		}
@@ -53,12 +62,18 @@ public class MandatoryConnection {
 				add=false;
 				break;
 			}
-		}
-		
+		}		
 		if(add){
 			addDeliverList(new VehicleAction(Action.LOAD_AND_DELIVER,req));			
 		}
 	}
+	
+	public List<VehicleAction> getRoute(){
+		List<VehicleAction> ret = new LinkedList<>(pickupList);
+		ret.addAll(deliverList);
+		return ret;
+	}
+	
 	
 
 	public final List<VehicleAction> getPickupList() {

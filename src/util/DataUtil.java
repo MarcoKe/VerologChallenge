@@ -24,8 +24,11 @@ public class DataUtil {
 	
 	
 	public static int getActionCapacity(/*DataController data,*/ VehicleAction action){
-		int ret = action.getRequest().getAmountOfTools();
-		ret*= action.getRequest().getTool().getSize();
+		int ret = 0;
+		if(action != null && action.getRequest() != null){
+			ret = action.getRequest().getAmountOfTools();
+			ret*= action.getRequest().getTool().getSize();
+		}
 		return ret;
 	}
 	

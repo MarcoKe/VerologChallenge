@@ -16,6 +16,17 @@ public class VehicleInformation {
 		route.add(new VehicleAction(Action.TO_DEPOT, null));
 		route.add(route.size(), new VehicleAction(Action.TO_DEPOT, null));
 	}
+	
+	public VehicleInformation(List<VehicleAction> route){
+		this.route = new LinkedList<>();
+		this.route.addAll(route);
+		if(this.route.get(0).getVehicleAction() != Action.TO_DEPOT){
+			this.route.add(0,new VehicleAction(Action.TO_DEPOT, null));
+		}
+		if(this.route.get(this.route.size()-1).getVehicleAction() != Action.TO_DEPOT){
+			this.route.add(this.route.size(), new VehicleAction(Action.TO_DEPOT, null));
+		}
+	}
 
 	public void addAction(VehicleAction vehicAct) {
 		route.add(route.size()-1,vehicAct);
