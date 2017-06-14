@@ -27,8 +27,10 @@ import data.VehicleInformation;
 import routing.MandatoryConnection;
 import routing.Routing;
 import routing.SimpleRouting;
+import routing.SimulatedAnnealingRouting;
 
 public class SimulatedAnnealingSolver implements Solver {
+	Routing routing = new SimpleRouting(); 
 	private boolean debug = true; // TODO: remove once done 
 	private Map<Integer, DayInformation> days;
 	private DataController data; 
@@ -275,7 +277,7 @@ public class SimulatedAnnealingSolver implements Solver {
 	}
 	
 	public StrategyController externalRouting(StrategyController initial) {
-		Routing routing = new SimpleRouting(); 
+		
 		
 		List<DayInformation> newDays = new ArrayList<>(); 
 		for (DayInformation day : initial.getDays()) {
