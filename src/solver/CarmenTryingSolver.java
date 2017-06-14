@@ -247,6 +247,7 @@ public class CarmenTryingSolver implements Solver {
 			Request req = maxOverlappingList.get(i);
 			toolUsedByRequest.put(req, new ArrayList<>());
 			t = 0;
+			boolean manConDelDaySet = false;
 			for (int j = req.getAmountOfTools(); j > 0; --j) {
 				boolean toolPlaced = false;
 				while( t < lastTimeToolUsedList.length && !toolPlaced) {
@@ -271,8 +272,10 @@ public class CarmenTryingSolver implements Solver {
 							(getPickupDay(prevReq)<= req.getEndTime()) &&
 							(data.getGlobal().computeDistance(req.getLocation(), prevReq.getLocation())
 							<= maxdistance)) {
-							
 						int delDay = getPickupDay(prevReq);
+						if(manConDelDaySet){
+							delDay = possition.get(req);
+						}
 						List<MandatoryConnection> manConList = manConDay.get(delDay);
 						if(manConList == null){
 							manConList = new ArrayList<>();
@@ -294,6 +297,7 @@ public class CarmenTryingSolver implements Solver {
 
 							addRequestToManConDay(manCon, prevReq, req);
 							addRequestToPickupDay(req);
+							manConDelDaySet = true;
 							toolPlaced = true;
 						}
 					}
@@ -393,9 +397,11 @@ public class CarmenTryingSolver implements Solver {
 	
 	private MandatoryConnection getConnectionOfRequest (List<MandatoryConnection> manCon, Request pick, Request deliver ){
 		MandatoryConnection ret = null;
+
 		for(int i=0;i<manCon.size()&& ret == null;++i){
 			List<VehicleAction> checkList = manCon.get(i).getPickupList();
 			for(VehicleAction action: checkList){
+
 				if(action.getRequest() == pick){
 					ret = manCon.get(i);
 					break;
@@ -409,6 +415,7 @@ public class CarmenTryingSolver implements Solver {
 				}
 			}
 		}
+
 		return ret;
 	}
 	
