@@ -24,6 +24,9 @@ import data.Vehicle;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import data.VehicleInformation;
+import routing.MandatoryConnection;
+import routing.Routing;
+import routing.SimpleRouting;
 
 public class SimulatedAnnealingSolver implements Solver {
 	private boolean debug = true; // TODO: remove once done 
@@ -47,7 +50,8 @@ public class SimulatedAnnealingSolver implements Solver {
 		routeAnalyser = new RouteAnalyser(data); 
 		p = simulatedAnnealing(data,p, 10000, 0.001, this::reuseEnergyFunction);
 				
-		return route(p);
+		return externalRouting(route(p));
+//		return route(p);
 		
 	}
 	
@@ -270,6 +274,48 @@ public class SimulatedAnnealingSolver implements Solver {
 		
 	}
 	
+	public StrategyController externalRouting(StrategyController initial) {
+		Routing routing = new SimpleRouting(); 
+		
+		List<DayInformation> newDays = new ArrayList<>(); 
+		for (DayInformation day : initial.getDays()) {
+			List<MandatoryConnection> mandatoryConnections = new ArrayList<>(); 
+			List<VehicleAction> simpleConnections = new ArrayList<>(); 
+			
+			for (VehicleInformation vehicle : day.getVehicleInformationList()) {
+				List<VehicleAction> route = vehicle.getRoute();
+				int routeSize = route.size(); 
+				
+				if (routeSize > 3) {
+					MandatoryConnection man = new MandatoryConnection(); 
+					for (int i = 1; i < routeSize-1; i++) {
+						if (route.get(i).getVehicleAction() == Action.LOAD_AND_DELIVER) 
+							man.addDeliverList(route.get(i));
+						else 
+							man.addPickupList(route.get(i));
+					}
+					
+					mandatoryConnections.add(man);
+				}
+				else {
+					simpleConnections.add(route.get(1)); 
+				}
+				
+				
+			}
+			
+			List<VehicleInformation> dayRouting = routing.getRouting(data, simpleConnections, mandatoryConnections);
+			DayInformation newDayInfo = new DayInformation(day.getDay()); 
+			newDayInfo.addAllVehickeInformation(dayRouting);
+			newDays.add(newDayInfo);
+			
+			
+		}
+		
+		
+		return new StrategyController(newDays);
+		
+	}
 	
 
 }
