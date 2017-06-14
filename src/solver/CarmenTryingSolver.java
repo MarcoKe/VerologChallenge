@@ -379,15 +379,27 @@ public class CarmenTryingSolver implements Solver {
 		manCon.addPickupList(pick);
 		manCon.addDeliverList(del);
 		
-		List<Request> deliverList = deliverDay.get(delDay);
-		if(deliverList != null){
-			deliverList.remove(del);
+		
+		//move pick so that delDay  == pickupday from pickup request
+		if(getPickupDay(pick)!= delDay){
+			List<Request> pickDeliverList = deliverDay.get(possition.get(pick));
+			pickDeliverList.remove(pick);
+			while(getPickupDay(pick) < delDay){
+				possition.put(pick, possition.get(pick)+1);
+			}			
+			addRequestToDeliveryDay(pick);
 		}
-		List<Request> pickupList = pickUpDay.get(delDay);
+		
+		List<Request> pickupList = pickUpDay.get(getPickupDay(pick));
 		if(pickupList != null)
 		{
 			pickupList.remove(pick);
 		}	
+		
+		List<Request> deliverList = deliverDay.get(delDay);
+		if(deliverList != null){
+			deliverList.remove(del);
+		}
 		
 		if(!manConDay.get(delDay).contains(manCon)){
 			manConDay.get(delDay).add(manCon);
@@ -420,7 +432,7 @@ public class CarmenTryingSolver implements Solver {
 	}
 	
 	public int getPickupDay(Request req){
-		return possition.get(req) + req.getUsageTime()  ;
+		return possition.get(req) + req.getUsageTime() + 1;
 	}
 	public boolean possibleTrip(Location l1, Location l2) {
 		Vehicle vehicle = data.getVehicle();
