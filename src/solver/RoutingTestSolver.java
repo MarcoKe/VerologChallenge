@@ -18,12 +18,13 @@ import data.StrategyController;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import data.VehicleInformation;
+import routing.CircularRouting;
 import routing.Routing;
 import routing.SimpleRouting;
 
 public class RoutingTestSolver implements Solver{
 
-	private Routing routing = new SimpleRouting();
+	private Routing routing = new CircularRouting();
 	
 	public StrategyController solve(DataController data) {
 		
@@ -54,10 +55,10 @@ public class RoutingTestSolver implements Solver{
 			
 			workList.add(req);
 			
-			workList = dayPickup.get(req.getStartTime()+req.getUsageTime()+1);
+			workList = dayPickup.get(req.getStartTime()+req.getUsageTime());
 			if(workList == null){
 				workList = new LinkedList<>();
-				dayPickup.put(req.getStartTime()+req.getUsageTime()+1, workList);
+				dayPickup.put(req.getStartTime()+req.getUsageTime(), workList);
 			}
 			workList.add(req);			
 		}
@@ -67,7 +68,7 @@ public class RoutingTestSolver implements Solver{
 		workDays.addAll(dayPickup.keySet());
 		
 		for(int day : workDays){
-			System.out.println(day);
+			System.out.println("Day: "+day);
 			DayInformation dayInfo = new DayInformation(day);
 			List<VehicleAction> simpleLoc= new LinkedList<>();
 			List<Request> deliver = dayDeliver.get(day);

@@ -41,7 +41,7 @@ public class VehicleAction extends RoutingElement {
 	@Override
 	public double[] getSpaceVector(DataController data) {
 		if(spaceVector == null){
-			double[] spaceVector = new double[data.getToolList().size()+LOCATION_DIMENSION];
+			spaceVector = new double[data.getToolList().size()+LOCATION_DIMENSION];
 			Location loc = request.getLocation();
 			spaceVector[0] = loc.getX();
 			spaceVector[1] = loc.getY();
