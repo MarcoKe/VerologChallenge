@@ -2,6 +2,7 @@ package routing;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -19,18 +20,32 @@ public class KMeansRouting implements Routing {
 
 
 	private DataController data = null;
-
-	public KMeansRouting() {
+	private Routing subRouting = null;
+	
+	
+	public KMeansRouting(Routing subRouting) {
+		this.subRouting = subRouting;
 	}
 
 	public List<VehicleInformation> getRouting(DataController data, List<VehicleAction> simpleLoc,
 			List<MandatoryConnection> conLoc) {
+		LinkedList<RoutingElement> dataSet = new LinkedList<>();
+		if(simpleLoc != null){
+			dataSet.addAll(simpleLoc);
+		}
+		if(conLoc != null){
+			dataSet.addAll(conLoc);
+		}
+		
+		return getRouting(data, dataSet);		
+	}
+	
+	
+	public List<VehicleInformation> getRouting(DataController data, List<RoutingElement> dataSet) {
 		List<VehicleInformation> ret = null;
 		boolean foundSolution = false;
 		this.data = data;
 		int k = 1;
-		List<RoutingElement> dataSet = new ArrayList<>(simpleLoc);
-		// dataSet.add(conLoc);
 		try {
 			while (!foundSolution) {
 				Set<double[]> meanSet = null;
@@ -68,6 +83,7 @@ public class KMeansRouting implements Routing {
 
 		return ret;
 	}
+	
 
 	private Map<double[], List<RoutingElement>> assignToMean(Set<double[]> meanSet, List<RoutingElement> dataSet) {
 		Map<double[], List<RoutingElement>> ret = new TreeMap<>();
@@ -146,4 +162,6 @@ public class KMeansRouting implements Routing {
 		}
 		return ret;
 	}
+
+
 }

@@ -182,5 +182,11 @@ public class SimulatedAnnealingRouting implements Routing {
         
         return Math.exp((energy - newEnergy) / temperature);
     }
+
+	@Override
+	public List<VehicleInformation> getRouting(DataController data, List<RoutingElement> dataSet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

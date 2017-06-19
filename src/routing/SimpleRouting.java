@@ -1,6 +1,5 @@
 package routing;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,9 +11,18 @@ public class SimpleRouting implements Routing{
 
 	public List<VehicleInformation> getRouting(DataController data, List<VehicleAction> simpleLocs,
 			List<MandatoryConnection> conLocs) {
-		List<VehicleInformation> ret = new LinkedList<>();
 		
-		//MandatoryConnections
+		LinkedList<RoutingElement> dataSet = new LinkedList<>();
+		if(simpleLocs != null){
+			dataSet.addAll(simpleLocs);
+		}
+		if(conLocs!= null){
+			dataSet.addAll(conLocs);
+		}
+		
+		return getRouting(data, dataSet);
+		
+	/*	//MandatoryConnections
 		if(conLocs != null){
 			for(MandatoryConnection manCon: conLocs){
 				VehicleInformation vehicInfo = new VehicleInformation();
@@ -38,8 +46,21 @@ public class SimpleRouting implements Routing{
 			}
 		}
 		
+		return ret;*/
+	}
+
+	public List<VehicleInformation> getRouting(DataController data, List<RoutingElement> dataSet) {
+		
+		List<VehicleInformation> ret = new LinkedList<>();
+		for(RoutingElement rtElem : dataSet){
+			ret.add(new VehicleInformation(rtElem.getRouteElement()));
+		}
+
 		return ret;
 	}
+	
+	
+
 
 	
 }

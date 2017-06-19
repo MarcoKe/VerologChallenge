@@ -119,7 +119,6 @@ public class RoutingUtil {
 			ret = new double[rtElemList.get(0).getSpaceVector(data).length];
 			Arrays.fill(ret, 0);
 			int clusterSize = rtElemList.size();
-			
 			// Handle Overflow with safe
 			double[] safe = new double[ret.length];
 			for (int i = 0; i < rtElemList.size(); ++i) {
@@ -128,8 +127,9 @@ public class RoutingUtil {
 				// if any overflow divide by clusterSize and add to newMean else
 				// add up on safe
 				for (int j = 0; j < ret.length; ++j) {
-					isOverflowSafe = isOverflowSafe && (safe[j] > 0 && spaceVec[j] > Double.MAX_VALUE - safe[j]);
+					isOverflowSafe = isOverflowSafe && (safe[j] >= 0 && spaceVec[j] < Double.MAX_VALUE - safe[j]);
 				}
+				
 				if (isOverflowSafe) {
 					for (int j = 0; j < ret.length; ++j) {
 						safe[j] += spaceVec[j];
@@ -137,7 +137,7 @@ public class RoutingUtil {
 				} else {
 					for (int j = 0; j < ret.length; ++j) {
 						ret[j] += safe[j] / clusterSize;
-						safe[j] = 0;
+						safe[j] = spaceVec[j];
 					}
 				}
 			}
