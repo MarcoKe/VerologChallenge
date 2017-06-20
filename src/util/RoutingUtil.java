@@ -86,6 +86,7 @@ public class RoutingUtil {
 				
 			}else{
 				int currLoad = fromDepotLoad;
+				maxVehicLoad = Math.max(maxVehicLoad, currLoad);
 				rtIdx[1] = i;
 				while(rtIdx[0] < rtIdx[1]){
 					++rtIdx[0];
