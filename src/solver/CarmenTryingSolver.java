@@ -94,7 +94,17 @@ public class CarmenTryingSolver implements Solver {
 			requestsLists.add(list);
 
 		}
-
+		
+		for( int i = 0; i < list.size(); i++)
+		{
+			System.out.println("ID" + list.get(i).getId());
+		}
+		
+		List<Request> helper = requestsLists.get(0);
+		
+		for (int i = helper.size()-1; i>0; i--) {
+		System.out.println(helper.get(i).getId());}
+		//System.out.println(requestsLists.get(0).getId());
 		// For each list (Group of requests with same tool) take all requests
 		// and get the time windows.
 
@@ -383,8 +393,10 @@ public class CarmenTryingSolver implements Solver {
 		//move pick so that delDay  == pickupday from pickup request
 		if(getPickupDay(pick)!= delDay){
 			List<Request> pickDeliverList = deliverDay.get(possition.get(pick));
-			pickDeliverList.remove(pick);
-			while(getPickupDay(pick) < delDay){
+			if(pickDeliverList != null){
+				pickDeliverList.remove(pick);
+			}
+		while(getPickupDay(pick) < delDay){
 				possition.put(pick, possition.get(pick)+1);
 			}			
 			addRequestToDeliveryDay(pick);
@@ -432,7 +444,7 @@ public class CarmenTryingSolver implements Solver {
 	}
 	
 	public int getPickupDay(Request req){
-		return possition.get(req) + req.getUsageTime() + 1;
+		return possition.get(req) + req.getUsageTime();
 	}
 	public boolean possibleTrip(Location l1, Location l2) {
 		Vehicle vehicle = data.getVehicle();

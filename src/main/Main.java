@@ -21,6 +21,8 @@ import solver.SimulatedAnnealingSolver;
 import solver.Solver;
 import solver.StupidSolver2;
 import solver.StupidSolver3;
+import solver.old1;
+import solver.old2;
 
 public class Main {
 	public static void main(String[] args) {
@@ -33,7 +35,7 @@ public class Main {
 		File f = new File(filename);
 		DataController data = r.readFile(f);
 		
-		Solver stup = new CarmenTryingSolver();
+		Solver stup = new old2();
 		StrategyController strat = stup.solve(data);
 		
 		Writer w = new Writer();
