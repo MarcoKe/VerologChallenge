@@ -24,6 +24,7 @@ import data.Vehicle;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import data.VehicleInformation;
+import io.PlacementWriter;
 import routing.MandatoryConnection;
 import routing.Routing;
 import routing.SimpleRouting;
@@ -37,6 +38,11 @@ public class SimulatedAnnealingSolver implements Solver {
 	private DataController data; 
 	private PlacementAnalyser placementAnalyser;
 	private RouteAnalyser routeAnalyser;
+	private String filename; 
+	
+	public SimulatedAnnealingSolver(String filename) {
+		this.filename = filename; 
+	}
 	
 	
 	public StrategyController solve(DataController data) {
@@ -274,6 +280,8 @@ public class SimulatedAnnealingSolver implements Solver {
 	
 	public StrategyController externalRouting(StrategyController initial) {
 		
+		List<List<VehicleAction>> simpleConnectionList = new ArrayList<>(); 
+		List<List<MandatoryConnection>> mandatoryConnectionList = new ArrayList<>(); 
 		
 		List<DayInformation> newDays = new ArrayList<>(); 
 		for (DayInformation day : initial.getDays()) {
@@ -302,15 +310,17 @@ public class SimulatedAnnealingSolver implements Solver {
 				
 			}
 			
+			simpleConnectionList.add(simpleConnections);
+			mandatoryConnectionList.add(mandatoryConnections);
 			List<VehicleInformation> dayRouting = routing.getRouting(data, simpleConnections, mandatoryConnections);
 			DayInformation newDayInfo = new DayInformation(day.getDay()); 
 			newDayInfo.addAllVehickeInformation(dayRouting);
-			newDays.add(newDayInfo);
-			
+			newDays.add(newDayInfo);		
 			
 		}
 		
-		
+		PlacementWriter pwriter = new PlacementWriter(); 
+		pwriter.write(data, simpleConnectionList, mandatoryConnectionList);
 		return new StrategyController(newDays);
 		
 	}

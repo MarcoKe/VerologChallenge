@@ -4,6 +4,7 @@ package io;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import data.DataController;
@@ -15,8 +16,33 @@ public class PlacementWriter {
 	private static final String DATASET_VAR = "DATASET = ";
 	private static final String NAME_VAR = "NAME = ";	
 	
-	public void write(DataController data, Global global, List<List<VehicleAction>> simpleLocations, List<List<MandatoryConnection>> connectedLocations){
-		String fileName = global.getFileName().split("\\.")[0] + ".plc.txt";
+	public void write(DataController data, List<List<RoutingElement>> solution) {
+		List<List<VehicleAction>> simpleLocations = new ArrayList<>(); 
+		List<List<MandatoryConnection>> connectedLocations = new ArrayList<>(); 
+		
+		for (List<RoutingElement> elList : solution) {
+			List<VehicleAction> simpleDay = new ArrayList<>(); 
+			List<MandatoryConnection> connectedDay = new ArrayList<>(); 
+			
+			
+			for (RoutingElement el : elList) {
+				if (el instanceof VehicleAction) {
+					simpleDay.add((VehicleAction) el); 
+				}
+				else if(el instanceof MandatoryConnection) {
+					connectedDay.add((MandatoryConnection) el); 
+				}
+			}
+			
+			simpleLocations.add(simpleDay); 
+			connectedLocations.add(connectedDay);
+		}
+		
+		write(data, simpleLocations, connectedLocations); 
+	}
+	
+	public void write(DataController data, List<List<VehicleAction>> simpleLocations, List<List<MandatoryConnection>> connectedLocations){
+		String fileName = data.getGlobal().getFileName().split("\\.")[0] + ".plc.txt";
 		BufferedWriter bw = null;	
 		try {
 			bw = new BufferedWriter(new FileWriter(fileName));
