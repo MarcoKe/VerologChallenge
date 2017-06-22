@@ -27,7 +27,7 @@ import solver.old2;
 public class Main {
 	public static void main(String[] args) {
 		
-		String filename = "data/ORTEC_Test/ORTEC_Test_01.txt";
+		String filename = "data/ORTEC_Test/ORTEC_Test_05.txt";
 		if (args.length > 0) {
 			filename = args[0]; 
 		}

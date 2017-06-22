@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,9 @@ import data.Tool;
 import data.Vehicle;
 import data.VehicleAction;
 import data.VehicleInformation;
+import routing.CircularRouting;
+import routing.HierachicalClusterRouting;
+import routing.KMeansRouting;
 import routing.MandatoryConnection;
 import routing.Routing;
 import routing.SimpleRouting;
@@ -28,6 +32,7 @@ import data.VehicleAction.Action;
 
 public class old2 implements Solver {
 
+	Routing routing = new CircularRouting();
 	DataController data;
 	Location depot;
 
@@ -167,7 +172,13 @@ public class old2 implements Solver {
 				}
 				
 				placingTools();
-
+				
+//				for(int i = 0; i < list.size(); i++)
+//				{
+//					System.out.println("ID: " + maxOverlappingList.get(i).getId() +  " Starting possition: " + 
+//							possition.get(maxOverlappingList.get(i)) + " Ending time: " +  
+//									(possition.get(maxOverlappingList.get(i)) + maxOverlappingList.get(i).getUsageTime()) );
+//				}
 
 				for (int i = 0; i < maxOverlappingList.size(); i++) {
 				
@@ -185,10 +196,23 @@ public class old2 implements Solver {
 		}
 		
 		List<DayInformation> dayInfoList = new LinkedList<>();
-
+		
 		Set<Integer> workDays = new TreeSet<>();
 		workDays.addAll(deliverDay.keySet());
 		workDays.addAll(pickUpDay.keySet());
+		
+		Map<Integer, List<Request>> pickupMap = new HashMap<>(); 
+		
+		for (Request request : placement.getPlacement().keySet()) {
+			int pday = placement.getPlacement().get(request) + request.getUsageTime(); 
+			if (pickupMap.get(pday) == null) {
+				pickupMap.put(pday, new ArrayList<Request>());
+			}
+			pickupMap.get(pday).add(request);
+		}
+		
+		
+		
 		
 		for(int day : workDays){
 			System.out.println(day);
@@ -197,24 +221,63 @@ public class old2 implements Solver {
 			List<Request> deliver = deliverDay.get(day);
 			List<Request> pickup = pickUpDay.get(day);
 			
+			Set<Request> deliverSet = new HashSet<>(); 
+			
+			Set<Request> pickupSet = new HashSet<>(); 
+			
+			
+			if (deliver != null) {
+				deliverSet.addAll(deliver); 
+				deliver.clear();
+				deliver.addAll(deliverSet); 
+			}
+			if (pickup != null) { 
+				pickupSet.addAll(pickup); 
+				pickup.clear();
+				pickup.addAll(pickupSet);
+			}
+			
+			
+			
+			
 			List<MandatoryConnection> manConsList = new ArrayList<>();
 			
 			if(deliver !=null){
 				for(Request req: deliver){
-					simpleLoc.add(new VehicleAction(Action.LOAD_AND_DELIVER, req));
+					System.out.println(req.getId() + "   this is an id");
+					if (placement.getPlacement().get(req) == day) {
+						simpleLoc.add(new VehicleAction(Action.LOAD_AND_DELIVER, req));						
+					}
 				}
 			}
 			if(pickup != null){
 				for(Request req: pickup){
 					
-					simpleLoc.add(new VehicleAction(Action.PICK_UP, req));
+					
+					if (placement.getPlacement().get(req) + req.getUsageTime() == day) { 
+						simpleLoc.add(new VehicleAction(Action.PICK_UP, req));
+						pickupMap.get(day).remove(req);
+					}
 				}
 			}
 			
-			Routing routing = new SimpleRouting();
+			List<Request> leftOverPickups = pickupMap.get(day); 
+			
+			if (leftOverPickups != null) {
+				for (Request p : leftOverPickups) {
+					simpleLoc.add(new VehicleAction(Action.PICK_UP, p)); 
+				}
+			}
+			
+			
 			List<VehicleInformation> infoList = routing.getRouting(data, simpleLoc, null);
 			dayInfo.addAllVehickeInformation(infoList);
 			dayInfoList.add(dayInfo);
+			
+			for(int i = 0; i < dayInfoList.size(); i++)
+			{
+				System.out.println("Day info: " + dayInfoList.get(i)) ;
+			}
 		}
 		
 		
@@ -286,18 +349,17 @@ public class old2 implements Solver {
 
 				}
 				
-				
+			}
 			
 			System.out.println("ID: " + req.getId() + " tool used: " + t + " Starting possition: " + 
 					possition.get(req) + " Ending time: " +  
 							(possition.get(req) + req.getUsageTime()) );
-			}
 			
 			int delDay = possition.get(req);
 			
 			
 			
-			System.out.println("Req: " + req.getId() +" " +Arrays.toString(toolUsedByRequest.get(req).toArray()));
+			//System.out.println("Req: " + req.getId() +" " +Arrays.toString(toolUsedByRequest.get(req).toArray()));
 			
 			List<Request> deliverList = deliverDay.get(delDay);
 			if(deliverList == null)
@@ -316,10 +378,7 @@ public class old2 implements Solver {
 			}
 			
 			pickUpList.add(req);
-			pickUpDay.put(pickDay,deliverList);
-			
-			
-			
+			pickUpDay.put(pickDay,deliverList);		
 		}
 
 	}
