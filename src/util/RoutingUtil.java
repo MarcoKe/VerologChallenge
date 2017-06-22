@@ -2,6 +2,7 @@ package util;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
@@ -12,6 +13,7 @@ import data.Location;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import routing.RouteStatistics;
+import routing.RoutingElement;
 import data.VehicleInformation;
 
 public class RoutingUtil {
@@ -38,7 +40,6 @@ public class RoutingUtil {
 
 	public static int getVehicleInformationCost(DataController data, VehicleInformation vehicInfo) {
 		int ret = 0;
-		int currCapacity = 0;
 		ret += data.getVehicle().getCostPerDay();
 		for (int i = 1; i < vehicInfo.getRoute().size(); ++i) {
 			Location loc1 = DataUtil.getActionLocation(data, vehicInfo.getRoute().get(i - 1));
@@ -85,6 +86,7 @@ public class RoutingUtil {
 				
 			}else{
 				int currLoad = fromDepotLoad;
+				maxVehicLoad = Math.max(maxVehicLoad, currLoad);
 				rtIdx[1] = i;
 				while(rtIdx[0] < rtIdx[1]){
 					++rtIdx[0];
@@ -110,6 +112,42 @@ public class RoutingUtil {
 		
 		return new RouteStatistics(travelDistance,maxVehicLoad);
 		
+	}
+	
+	public static double[] getCenterOfMass(DataController data, List<RoutingElement> rtElemList){
+		double[] ret = null;
+		if(!rtElemList.isEmpty()){
+			ret = new double[rtElemList.get(0).getSpaceVector(data).length];
+			Arrays.fill(ret, 0);
+			int clusterSize = rtElemList.size();
+			// Handle Overflow with safe
+			double[] safe = new double[ret.length];
+			for (int i = 0; i < rtElemList.size(); ++i) {
+				double[] spaceVec = rtElemList.get(i).getSpaceVector(data);
+				boolean isOverflowSafe = true;
+				// if any overflow divide by clusterSize and add to newMean else
+				// add up on safe
+				for (int j = 0; j < ret.length; ++j) {
+					isOverflowSafe = isOverflowSafe && (safe[j] >= 0 && spaceVec[j] < Double.MAX_VALUE - safe[j]);
+				}
+				
+				if (isOverflowSafe) {
+					for (int j = 0; j < ret.length; ++j) {
+						safe[j] += spaceVec[j];
+					}
+				} else {
+					for (int j = 0; j < ret.length; ++j) {
+						ret[j] += safe[j] / clusterSize;
+						safe[j] = spaceVec[j];
+					}
+				}
+			}
+			
+			for (int j = 0; j < ret.length; ++j) {
+				ret[j] += safe[j] / clusterSize;
+			}			
+		}
+		return ret;
 	}
 	
 	
