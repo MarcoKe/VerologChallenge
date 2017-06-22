@@ -47,32 +47,36 @@ public class KMeansRouting implements Routing {
 		int k = 1;
 		try {
 			while (!foundSolution) {
-				Set<double[]> meanSet = null;
+				System.out.println(k);
+				Set<DoubleArray> meanSet = null;
 				meanSet = initRandomMeans(k, dataSet);
-				Map<double[], List<RoutingElement>> clusters = null;
+
+				Map<DoubleArray, List<RoutingElement>> clusters = null;
+
 				boolean noChange = true;
 				while (noChange) {
+
 					clusters = assignToMean(meanSet, dataSet);
-					Set<double[]> newMeanSet = calcNewMean(clusters);
+
+					Set<DoubleArray> newMeanSet = calcNewMean(clusters);
+
 					if (meanSet.containsAll(newMeanSet)) {
 						noChange = false;
 					}
+
 					meanSet = newMeanSet;
 				}
 				
 
-				// TODO Find a routing solution for List<VehicleAction> in
-				// $clusters
-				// use interface to make it easy to swap between routing
-				// algorithms where, List<VehicleAction> is solver by one
-				// vehicle ?
-				//
-
-				// TODO delete
-				if (k == 5) {
+				ret = new LinkedList<>();
+				for(List<RoutingElement>  clusterList:	clusters.values()){
+					List<VehicleInformation> list = subRouting.getRouting(data, clusterList);
+					ret.addAll(list);
+				}
+				
+				if(ret.size() == k){
 					foundSolution = true;
 				}
-
 				// increase k until found solution
 				++k;
 			}
@@ -84,20 +88,20 @@ public class KMeansRouting implements Routing {
 	}
 	
 
-	private Map<double[], List<RoutingElement>> assignToMean(Set<double[]> meanSet, List<RoutingElement> dataSet) {
-		Map<double[], List<RoutingElement>> ret = new TreeMap<>();
-		for (double[] mean : meanSet) {
+	private Map<DoubleArray, List<RoutingElement>> assignToMean(Set<DoubleArray> meanSet, List<RoutingElement> dataSet) {
+		Map<DoubleArray, List<RoutingElement>> ret = new TreeMap<>();
+		for (DoubleArray mean : meanSet) {
 			ret.put(mean, new ArrayList<>());
 		}
 
 		for (int actionPos = 0; actionPos < dataSet.size(); ++actionPos) {
 			RoutingElement currElem = dataSet.get(actionPos);
-			double[] minMean = null;
+			DoubleArray minMean = null;
 			double minVariance = Double.MAX_VALUE;
-			for (double[] mean : meanSet) {
+			for (DoubleArray mean : meanSet) {
 				double variance = getVariance(mean, currElem);
 				if (variance < minVariance) {
-					minMean = mean;
+					minMean = new DoubleArray(mean.ar);
 					minVariance = variance;
 				}
 			}
@@ -112,21 +116,24 @@ public class KMeansRouting implements Routing {
 	 * @param clusters
 	 * @return Center of Mass of cluster values (RoutingElemen)
 	 */
-	private Set<double[]> calcNewMean(Map<double[], List<RoutingElement>> clusters) {
-		Set<double[]> ret = new TreeSet<>();
-		for (double[] mean : clusters.keySet()) {
-			double[] newMean = RoutingUtil.getCenterOfMass(data, clusters.get(mean));
+	private Set<DoubleArray> calcNewMean(Map<DoubleArray, List<RoutingElement>> clusters) {
+		Set<DoubleArray> ret = new TreeSet<>();
+		for (DoubleArray mean : clusters.keySet()) {
+			if(clusters.get(mean).isEmpty()){
+				continue;
+			}
+			DoubleArray newMean =new DoubleArray(RoutingUtil.getCenterOfMass(data, clusters.get(mean)));
 			ret.add(newMean);
 		}
 		return ret;
 	}
 
-	private double getVariance(double[] mean, RoutingElement routeElem) {
+	private double getVariance(DoubleArray mean, RoutingElement routeElem) {
 		double ret = 0.0;
 		double[] spaceVec = routeElem.getSpaceVector(data);
-		assert mean.length == spaceVec.length;
-		for (int i = 0; i < mean.length; ++i) {
-			ret += Math.pow(spaceVec[i] - mean[i], 2);
+		assert mean.ar.length == spaceVec.length;
+		for (int i = 0; i < mean.ar.length; ++i) {
+			ret += Math.pow(spaceVec[i] - mean.ar[i], 2);
 		}
 		return ret;
 	}
@@ -140,8 +147,8 @@ public class KMeansRouting implements Routing {
 	 * @return
 	 * @throws Exception
 	 */
-	private Set<double[]> initRandomMeans(int k, List<RoutingElement> dataSet) throws Exception {
-		Set<double[]> ret = new TreeSet<>();
+	private Set<DoubleArray> initRandomMeans(int k, List<RoutingElement> dataSet) throws Exception {
+		Set<DoubleArray> ret = new TreeSet<>();
 		Set<Integer> rngList = new HashSet<>();
 		rngList.add(-1);
 		Random rng = new Random();
@@ -157,10 +164,32 @@ public class KMeansRouting implements Routing {
 			rngList.add(listPos);
 
 			double[] tmp = dataSet.get(listPos).getSpaceVector(data);
-			ret.add(tmp);
+			ret.add(new DoubleArray(tmp));
 		}
 		return ret;
 	}
+	
+}
 
 
+class DoubleArray implements Comparable<DoubleArray>{
+	final public double[] ar;
+	
+	public DoubleArray(double[] ar) {
+		this.ar = ar;
+	}
+
+	@Override
+	public int compareTo(DoubleArray o) {
+		double ret = 0;
+		int i=0;
+		while(i<this.ar.length && ret == 0){
+			ret = this.ar[i]-o.ar[i];
+			++i;
+		}			
+		return (int) Math.signum(ret);
+	}
+
+
+	
 }
