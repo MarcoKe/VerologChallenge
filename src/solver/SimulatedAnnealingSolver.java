@@ -173,9 +173,6 @@ public class SimulatedAnnealingSolver implements Solver {
 			requestsByEndDay.get(pickup).add(request); 
 		}
 		
-		Global g = data.getGlobal(); 
-		Location depot = data.getLocationList().get(0);
-		
 		// go through requests, try to match other requests both at beginning and end of given request 
 		List<Request> accountedForDelivery = new ArrayList<>(); 
 		List<Request> accountedForPickup = new ArrayList<>(); 
@@ -187,8 +184,6 @@ public class SimulatedAnnealingSolver implements Solver {
 				accountedForPickup.add(request); 
 				
 				requestsByEndDay.get(pickup).remove(request);
-				
-				int distance = g.computeDistance(depot, request.getLocation());
 				
 				// try to find a match at end of interval 
 				List<Request> matchesEnd = requestsByDay.get(pickup);

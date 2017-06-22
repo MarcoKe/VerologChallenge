@@ -1,27 +1,12 @@
 package main;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import data.DataController;
-import data.Depot;
-import data.Global;
-import data.Location;
-import data.Request;
 import data.StrategyController;
-import data.Tool;
-import data.Vehicle;
 import io.Reader;
 import io.Writer;
-import solver.BruteforceSolver;
-import solver.CarmenSolverRebuild;
-import solver.CarmenTryingSolver;
-import solver.SimulatedAnnealingSolver;
 import solver.Solver;
-import solver.StupidSolver2;
-import solver.StupidSolver3;
-import solver.old1;
 import solver.old2;
 
 public class Main {
