@@ -27,9 +27,11 @@ import data.VehicleInformation;
 import routing.MandatoryConnection;
 import routing.Routing;
 import routing.SimpleRouting;
+import routing.CircularRouting;
+import routing.CrossExchangeRouting;
 
 public class SimulatedAnnealingSolver implements Solver {
-	Routing routing = new SimpleRouting(); 
+	Routing routing = new CrossExchangeRouting(new CircularRouting()); 
 	private boolean debug = true; // TODO: remove once done 
 	private Map<Integer, DayInformation> days;
 	private DataController data; 
