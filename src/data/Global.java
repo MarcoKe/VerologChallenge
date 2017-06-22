@@ -6,10 +6,12 @@ public class Global {
 	private int[][] distanceMatrix;
 	private String dataSet;
 	private String name;
+	private String filename; 
 
-	public Global(String dataSet, String name, int days, int[][] distanceMatrix) {
+	public Global(String dataSet, String name, String filename, int days, int[][] distanceMatrix) {
 		this.dataSet = dataSet;
 		this.name = name;
+		this.filename = filename; 
 		this.days = days;
 		this.distanceMatrix = distanceMatrix;
 	}
@@ -39,6 +41,10 @@ public class Global {
 
 	public final String getName() {
 		return name;
+	}
+	
+	public final String getFileName() {
+		return filename; 
 	}
 
 

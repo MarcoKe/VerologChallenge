@@ -55,7 +55,9 @@ public class Reader {
 	 * @param f
 	 * @return
 	 */
-	public DataController readFile(File f) {
+	public DataController readFile(String filename) {
+		File f = new File(filename);
+		
 		DataController ret = null;
 		if (!f.exists()) {
 			System.out.println("File doesnt exist");
@@ -141,7 +143,7 @@ public class Reader {
 			vehicle = new Vehicle(capacity, maxDistance, costPerVehicle, costPerDay, costPerDistance,
 					VEHICLE_DEFAULT_ID);
 			depot = new Depot(depotLocation,depotMap);
-			global = new Global(dataset,name,days, distMatrix);
+			global = new Global(dataset,name,filename,days, distMatrix);
 				
 		} catch (IOException e) {
 			e.printStackTrace();
