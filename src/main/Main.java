@@ -21,11 +21,13 @@ import solver.SimulatedAnnealingSolver;
 import solver.Solver;
 import solver.StupidSolver2;
 import solver.StupidSolver3;
+import solver.old1;
+import solver.old2;
 
 public class Main {
 	public static void main(String[] args) {
 		
-		String filename = "data/ORTEC_Test/ORTEC_Test_01.txt";
+		String filename = "data/ORTEC_Test/ORTEC_Test_05.txt";
 		if (args.length > 0) {
 			filename = args[0]; 
 		}
@@ -33,7 +35,7 @@ public class Main {
 		File f = new File(filename);
 		DataController data = r.readFile(f);
 		
-		Solver stup = new CarmenTryingSolver();
+		Solver stup = new old2();
 		StrategyController strat = stup.solve(data);
 		
 		Writer w = new Writer();

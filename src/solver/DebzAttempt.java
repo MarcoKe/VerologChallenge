@@ -25,10 +25,9 @@ import data.VehicleInformation;
 import routing.MandatoryConnection;
 import routing.Routing;
 import routing.SimpleRouting;
-import util.RoutingUtil;
 import data.VehicleAction.Action;
 
-public class CarmenTryingSolver implements Solver {
+public class DebzAttempt implements Solver {
 
 	DataController data;
 	Location depot;
@@ -68,7 +67,7 @@ public class CarmenTryingSolver implements Solver {
 	Placement placement = new Placement();
 	
 
-	public CarmenTryingSolver() {
+	public DebzAttempt() {
 
 	}
 
@@ -94,17 +93,7 @@ public class CarmenTryingSolver implements Solver {
 			requestsLists.add(list);
 
 		}
-		
-		for( int i = 0; i < list.size(); i++)
-		{
-			System.out.println("ID" + list.get(i).getId());
-		}
-		
-		List<Request> helper = requestsLists.get(0);
-		
-		for (int i = helper.size()-1; i>0; i--) {
-		System.out.println(helper.get(i).getId());}
-		//System.out.println(requestsLists.get(0).getId());
+
 		// For each list (Group of requests with same tool) take all requests
 		// and get the time windows.
 
@@ -251,88 +240,65 @@ public class CarmenTryingSolver implements Solver {
 	 * 
 	 */
 	public void placingTools() {
-		int t = 0;		
+		int t = 0;
+		
 		lastTimeToolUsedList = new Request[toolsAvailable];
+
 		for (int i = 0; i < maxOverlappingList.size(); i++) {
 			Request req = maxOverlappingList.get(i);
 			toolUsedByRequest.put(req, new ArrayList<>());
 			t = 0;
-			boolean manConDelDaySet = false;
-			for (int j = req.getAmountOfTools(); j > 0; --j) {
-				boolean toolPlaced = false;
-				while( t < lastTimeToolUsedList.length && !toolPlaced) {
+			
+			for (int j = 0; j < req.getAmountOfTools(); j++) {
 
-					Request prevReq = lastTimeToolUsedList[t];
-	
-					if (prevReq == null) {
+				for (t = 0; t < lastTimeToolUsedList.length; t++) {
+
+					if (lastTimeToolUsedList[t] == null) {
+
 						if (!possition.containsKey(req)) {
 							possition.put(req, req.getStartTime());
 
 						}						
 						addRequestToDeliveryDay(req);
 						addRequestToPickupDay(req);
-						toolPlaced = true;
+						
+						toolUsedByRequest.get(req).add(t);
+						lastTimeToolUsedList[t] = req;
+
+						break;
 					}
 
-					else if (prevReq == req) {
+					else if (lastTimeToolUsedList[t] == req) {
 						continue;
 					}
 
-					else if (getPickupDay(prevReq) >= req.getStartTime() &&
-							(getPickupDay(prevReq)<= req.getEndTime()) &&
-							(data.getGlobal().computeDistance(req.getLocation(), prevReq.getLocation())
-							<= maxdistance)) {
-						int delDay = getPickupDay(prevReq);
-						if(manConDelDaySet){
-							delDay = possition.get(req);
-						}
-						List<MandatoryConnection> manConList = manConDay.get(delDay);
-						if(manConList == null){
-							manConList = new ArrayList<>();
-							manConDay.put(delDay, manConList);
-						}
-						
-						MandatoryConnection manCon = getConnectionOfRequest(manConList, prevReq, req);
-						MandatoryConnection cpyManCon = new MandatoryConnection(manCon);
-						cpyManCon.addPickupList(prevReq);
-						cpyManCon.addDeliverList(req);
-						
-						boolean isManConPossible = RoutingUtil.isRoutePossible(data, new VehicleInformation(cpyManCon.getRoute()));
+					else if ((getPickupDay(lastTimeToolUsedList[t]) >= req.getStartTime()) &&
+							(getPickupDay(lastTimeToolUsedList[t])<= req.getEndTime()) &&
+							(possibleTrip(lastTimeToolUsedList[t].getLocation(),req.getLocation()))) {
+//							(data.getGlobal().computeDistance(req.getLocation(), lastTimeToolUsedList[t].getLocation())
+//							<= maxdistance)) {
 
-											
-						if(isManConPossible){	
-							if (!possition.containsKey(req)) {
-								possition.put(req, getPickupDay(prevReq));
-							}
-
-							addRequestToManConDay(manCon, prevReq, req);
-							addRequestToPickupDay(req);
-							manConDelDaySet = true;
-							toolPlaced = true;
+						if (!possition.containsKey(req)) {
+							possition.put(req, getPickupDay(lastTimeToolUsedList[t]));
 						}
+
+						addRequestToManConDay(lastTimeToolUsedList[t], req);
+						addRequestToPickupDay(req);
+						toolUsedByRequest.get(req).add(t);
+						lastTimeToolUsedList[t] = req;
+
+						break;
 					}
 					else if(t == lastTimeToolUsedList.length-1){
 						System.out.println("no tool found");
 					}
-					
-					//Iterate through lastTimeToolUsedList where behavior is the same as t
-					while(j>0 && t<lastTimeToolUsedList.length && lastTimeToolUsedList[t] == prevReq){
-						if(toolPlaced){
-							toolUsedByRequest.get(req).add(t);
-							lastTimeToolUsedList[t]= req;
-							--j;
-						}
-						++t;
-					}
-					
+
 				}
 
-//			System.out.print("ID: " + req.getId()+ " Tool ID "+req.getTool().getId()+" tool used: " + t + " Starting possition: " + 
-//					possition.get(req) );
-//			System.out.print(" Ending time: " +  
-//							getPickupDay(req) );
-//			System.out.println(" Tool amound "+req.getAmountOfTools());		
-				
+			System.out.print("ID: " + req.getId()+ " Tool ID "+req.getTool().getId()+" tool used: " + t + " Starting possition: " + 
+					possition.get(req) );
+			System.out.println(" Ending time: " +  
+							getPickupDay(req) );
 			}
 		}
 
@@ -349,7 +315,8 @@ public class CarmenTryingSolver implements Solver {
 				reqNotInManCon = false;
 			}
 		}
-							
+			
+				
 		if(reqNotInManCon){
 			List<Request> deliverList = deliverDay.get(delDay);
 			if(deliverList == null)
@@ -379,53 +346,40 @@ public class CarmenTryingSolver implements Solver {
 		}
 	}
 	
-	public void addRequestToManConDay(MandatoryConnection manCon,Request pick, Request del){
+	public void addRequestToManConDay(Request pick, Request del){
 		int delDay = possition.get(del);
-		
+		List<MandatoryConnection> manConList = manConDay.get(delDay);
+		if(manConList == null){
+			manConList = new ArrayList<>();
+			manConDay.put(delDay, manConList);
+		}
+		MandatoryConnection manCon = getConnectionOfRequest(manConList, pick, del);
 		if(manCon == null){
 			manCon = new MandatoryConnection();
+			manConList.add(manCon);
 		}
 		
 		manCon.addPickupList(pick);
 		manCon.addDeliverList(del);
 		
-		
-		//move pick so that delDay  == pickupday from pickup request
-		if(getPickupDay(pick)!= delDay){
-			List<Request> pickDeliverList = deliverDay.get(possition.get(pick));
-			if(pickDeliverList != null){
-				pickDeliverList.remove(pick);
-			}
-		while(getPickupDay(pick) < delDay){
-				possition.put(pick, possition.get(pick)+1);
-			}			
-			addRequestToDeliveryDay(pick);
-		}
-		
-		List<Request> pickupList = pickUpDay.get(getPickupDay(pick));
-		if(pickupList != null)
-		{
-			pickupList.remove(pick);
-		}	
-		
+		//TODO remove pick from pickupDay
 		List<Request> deliverList = deliverDay.get(delDay);
 		if(deliverList != null){
 			deliverList.remove(del);
 		}
-		
-		if(!manConDay.get(delDay).contains(manCon)){
-			manConDay.get(delDay).add(manCon);
-		}
+		List<Request> pickupList = pickUpDay.get(delDay);
+		if(pickupList != null)
+		{
+			pickupList.remove(pick);
+		}		
 	}
 	
 	
 	private MandatoryConnection getConnectionOfRequest (List<MandatoryConnection> manCon, Request pick, Request deliver ){
 		MandatoryConnection ret = null;
-
-		for(int i=0;i<manCon.size()&& ret == null;++i){
+		for(int i=0;i<manCon.size();++i){
 			List<VehicleAction> checkList = manCon.get(i).getPickupList();
 			for(VehicleAction action: checkList){
-
 				if(action.getRequest() == pick){
 					ret = manCon.get(i);
 					break;
@@ -439,12 +393,11 @@ public class CarmenTryingSolver implements Solver {
 				}
 			}
 		}
-
 		return ret;
 	}
 	
 	public int getPickupDay(Request req){
-		return possition.get(req) + req.getUsageTime();
+		return possition.get(req) + req.getUsageTime()  ;
 	}
 	public boolean possibleTrip(Location l1, Location l2) {
 		Vehicle vehicle = data.getVehicle();

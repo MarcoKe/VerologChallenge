@@ -55,7 +55,7 @@ public class SimpleRouting implements Routing{
 		for(RoutingElement rtElem : dataSet){
 			ret.add(new VehicleInformation(rtElem.getRouteElement()));
 		}
-
+		
 		return ret;
 	}
 	
