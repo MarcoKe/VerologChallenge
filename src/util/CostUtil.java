@@ -54,7 +54,6 @@ public class CostUtil {
 				}
 				routePartCost.add(vehiclePartCost);
 
-				VehicleAction prevAction = null;
 				VehicleAction currAction = route.size() > 0 ? route.get(0) : null;
 				Location prevLocation = null;
 				Location currLocation = DataUtil.getActionLocation(data, currAction);
@@ -62,7 +61,6 @@ public class CostUtil {
 				addActionPartCost(currAction, vehiclePartCost);
 				//addDayToolUsage(currAction, dayToolUsage);
 				for (int i = 1; i < route.size(); ++i) {
-					prevAction = currAction;
 					currAction = route.get(i);
 					prevLocation = currLocation;
 					currLocation = DataUtil.getActionLocation(data, currAction); 

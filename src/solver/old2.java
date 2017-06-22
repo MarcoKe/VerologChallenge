@@ -1,7 +1,6 @@
 package solver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,14 +20,11 @@ import data.StrategyController;
 import data.Tool;
 import data.Vehicle;
 import data.VehicleAction;
+import data.VehicleAction.Action;
 import data.VehicleInformation;
 import routing.CircularRouting;
-import routing.HierachicalClusterRouting;
-import routing.KMeansRouting;
 import routing.MandatoryConnection;
 import routing.Routing;
-import routing.SimpleRouting;
-import data.VehicleAction.Action;
 
 public class old2 implements Solver {
 

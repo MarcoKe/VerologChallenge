@@ -1,7 +1,6 @@
 package solver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,12 +20,12 @@ import data.StrategyController;
 import data.Tool;
 import data.Vehicle;
 import data.VehicleAction;
+import data.VehicleAction.Action;
 import data.VehicleInformation;
 import routing.MandatoryConnection;
 import routing.Routing;
 import routing.SimpleRouting;
 import util.RoutingUtil;
-import data.VehicleAction.Action;
 
 public class CarmenTryingSolver implements Solver {
 

@@ -17,7 +17,6 @@ import data.StrategyController;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import data.VehicleInformation;
-import routing.BruteForceRouting;
 import routing.CircularRouting;
 import routing.HierachicalClusterRouting;
 import routing.Routing;
