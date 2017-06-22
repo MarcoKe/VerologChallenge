@@ -40,7 +40,7 @@ public class HierachicalClusterRouting implements Routing {
 
 		// Build tree
 		HCluster top = buildTree(initCluster);
-		return top.getRouting(subRouting);
+		return top.getRoutingUp(subRouting);
 	}
 
 	private HCluster buildTree(List<HCluster> clusters) {

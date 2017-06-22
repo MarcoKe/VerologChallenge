@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import data.DataController;
 import data.DayInformation;
-import data.Depot;
+import data.Global;
+import data.Location;
 import data.Request;
 import data.StrategyController;
 import data.Tool;
@@ -16,8 +16,6 @@ import data.Vehicle;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import data.VehicleInformation;
-import data.Global;
-import data.Location;
 
 
 // hacked together, do not use as a reference 

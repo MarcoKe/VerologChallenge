@@ -5,11 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import data.DataController;
-import data.Location;
 import data.Request;
 import data.VehicleAction;
 import data.VehicleAction.Action;
-import util.DataUtil;
 import util.RoutingUtil;
 
 public class MandatoryConnection extends RoutingElement {

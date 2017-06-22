@@ -95,4 +95,20 @@ public class HCluster {
 		list.addAll(right.getRouting(subRouting));
 		return list;
 	}
+	
+	public List<VehicleInformation> getRoutingUp(Routing subRouting){
+		if(left == null)
+			return subRouting.getRouting(data, elements);
+		
+		List<VehicleInformation> leftList =left.getRoutingUp(subRouting);
+		List<VehicleInformation> rightList =right.getRoutingUp(subRouting);
+		if(leftList.size()==1 && rightList.size()==1){
+			List<VehicleInformation> mySelf = subRouting.getRouting(data, elements);
+			if(mySelf.size()==1){
+				return mySelf;
+			}
+		}
+		leftList.addAll(rightList);
+		return leftList;
+	}
 }

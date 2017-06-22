@@ -5,16 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
 import data.DataController;
 import data.Location;
 import data.VehicleAction;
 import data.VehicleAction.Action;
+import data.VehicleInformation;
 import routing.RouteStatistics;
 import routing.RoutingElement;
-import data.VehicleInformation;
 
 public class RoutingUtil {
 

@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-
+import data.DataController;
 import data.DayInformation;
 import data.Location;
-
-import data.DataController;
-
 import data.OverallCost;
 import data.StrategyController;
 import data.Tool;

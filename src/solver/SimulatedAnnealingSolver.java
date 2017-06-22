@@ -27,7 +27,6 @@ import data.VehicleInformation;
 import routing.MandatoryConnection;
 import routing.Routing;
 import routing.SimpleRouting;
-import routing.SimulatedAnnealingRouting;
 
 public class SimulatedAnnealingSolver implements Solver {
 	Routing routing = new SimpleRouting(); 

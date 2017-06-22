@@ -4,10 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
-import data.OverallCost;
 import data.DataController;
-
+import data.OverallCost;
 import data.StrategyController;
 import util.CostUtil;
 

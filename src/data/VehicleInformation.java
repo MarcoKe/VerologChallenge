@@ -20,6 +20,11 @@ public class VehicleInformation {
 	public VehicleInformation(List<VehicleAction> route){
 		this.route = new LinkedList<>();
 		this.route.addAll(route);
+		if(route.isEmpty()){
+			this.route.add(new VehicleAction(Action.TO_DEPOT, null));
+			this.route.add(new VehicleAction(Action.TO_DEPOT, null));
+		}
+		
 		if(this.route.get(0).getVehicleAction() != Action.TO_DEPOT){
 			this.route.add(0,new VehicleAction(Action.TO_DEPOT, null));
 		}

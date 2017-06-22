@@ -2,7 +2,6 @@ package solver;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +17,14 @@ import data.StrategyController;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import data.VehicleInformation;
+import routing.BruteForceRouting;
 import routing.CircularRouting;
+import routing.HierachicalClusterRouting;
 import routing.Routing;
-import routing.SimpleRouting;
 
 public class RoutingTestSolver implements Solver{
 
-	private Routing routing = new CircularRouting();
+	private Routing routing = new HierachicalClusterRouting(new CircularRouting());
 	
 	public StrategyController solve(DataController data) {
 		

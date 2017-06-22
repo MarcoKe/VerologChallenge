@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-
 import data.DataController;
 import data.VehicleAction;
 import data.VehicleInformation;
