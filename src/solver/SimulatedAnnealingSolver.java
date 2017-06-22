@@ -38,12 +38,6 @@ public class SimulatedAnnealingSolver implements Solver {
 	private DataController data; 
 	private PlacementAnalyser placementAnalyser;
 	private RouteAnalyser routeAnalyser;
-	private String filename; 
-	
-	public SimulatedAnnealingSolver(String filename) {
-		this.filename = filename; 
-	}
-	
 	
 	public StrategyController solve(DataController data) {
 		this.data = data; 
