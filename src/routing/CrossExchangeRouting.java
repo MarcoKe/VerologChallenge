@@ -164,7 +164,6 @@ public class CrossExchangeRouting implements Routing {
 				int newCost = getCost(newTour); 
 				
 				if (newCost <= oldCost) {
-					System.out.println("yes");
 					tour.remove(index);
 				}
 			}
