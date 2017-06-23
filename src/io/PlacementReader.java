@@ -109,11 +109,9 @@ public class PlacementReader {
 	public MandatoryConnection createMandatoryConnection(List<Request> requests, String input) {		
 		MandatoryConnection manCon = new MandatoryConnection(); 
 		
-		System.out.println(input);
 		String[] actions = input.split(" "); 
 		for (String action : actions) {
 			int id = Integer.parseInt(action); 
-			System.out.println(id);
 			
 			if (id < 0) {
 				manCon.addPickupList(createVehicleAction(requests, id));
