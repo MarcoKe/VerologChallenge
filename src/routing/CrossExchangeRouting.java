@@ -3,6 +3,7 @@ package routing;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import analysis.RouteAnalyser;
 import data.DataController;
@@ -11,15 +12,16 @@ import data.VehicleAction.Action;
 import data.VehicleInformation;
 import util.RoutingUtil;
 
-public class CrossRouting implements Routing {
+public class CrossExchangeRouting implements Routing {
 	private static final int ITER_LIMIT = 1000; 
 	private DataController data; 
 	private RouteAnalyser routeAnalyser; 
 	private Routing baseRouting;  // routing used to compute initial solution 
 	private boolean done; 	
 	private int[] maxTools; 	
+	Function<List<List<RoutingElement>>, List<List<RoutingElement>>> neighbourhoodFunc = this::crossExchangeNeighbourhoodSearch;
 	
-	public CrossRouting(Routing baseRouting) {
+	public CrossExchangeRouting(Routing baseRouting) {
 		this.baseRouting = baseRouting; 
 	}
 
@@ -39,10 +41,8 @@ public class CrossRouting implements Routing {
 	
 	@Override
 	public List<VehicleInformation> getRouting(DataController data, List<RoutingElement> dataSet) {
-		List<RoutingElement> dataSetCopy = new ArrayList<>(dataSet);
 		List<VehicleInformation> r = baseRouting.getRouting(data, dataSet); 
 		List<List<RoutingElement>> initial = new ArrayList<>(); 
-//		List<List<RoutingElement>> manCon = vehicInfo2RoutingEl(dataSetCopy, r); 
 		
 		for (VehicleInformation vehicle : r) {
 			List<RoutingElement> v = new ArrayList<>(); 
@@ -56,48 +56,22 @@ public class CrossRouting implements Routing {
 		return route(data, initial);		
 	}
 	
-	public List<List<RoutingElement>> vehicInfo2RoutingEl(List<RoutingElement> original, List<VehicleInformation> vehicInfos) {
-		List<List<RoutingElement>> solution = new ArrayList<>(); 
-		
-		for (VehicleInformation v : vehicInfos) {
-			List<RoutingElement> newV = findMandatoryConnections(original, v); 
-			solution.add(newV); 
-		}
-				
-		return solution; 
-	}
-	
-	public List<RoutingElement> findMandatoryConnections(List<RoutingElement> original, VehicleInformation routed) {
-		List<RoutingElement> manConList = new ArrayList<>(); 
-				
-		for (VehicleAction el : routed.getRoute()) {
-			for (RoutingElement orgEl : original) {
-				if (orgEl.getRouteElement().get(0) == el) {
-					manConList.add(orgEl); 
-					break;
-				}				
-			}
-		}
-		
-		return manConList; 		
-	}
-	
 	public List<VehicleInformation> route(DataController data, List<List<RoutingElement>> initial) {
 		this.data = data; 
 		routeAnalyser = new RouteAnalyser(data); 
 		
 		done = false; 
-		List<List<RoutingElement>> modified = doCrossExchange(initial); 
+		List<List<RoutingElement>> modified = neighbourhoodFunc.apply(initial); 
 		int iterations = 0; 
 		while(!done && iterations < ITER_LIMIT) {
-			modified = doCrossExchange(initial);
+			modified = neighbourhoodFunc.apply(initial);
 			iterations++; 			
 		}
 			
 		return removeAllEmpty(convertSolution(cleanDepots(modified)));
 	}
 	
-	public List<List<RoutingElement>> doCrossExchange(List<List<RoutingElement>> vehicleList) {
+	public List<List<RoutingElement>> crossNeighbourhoodSearch(List<List<RoutingElement>> vehicleList) {
 		initToolUsage(vehicleList);
 		int bestFound = 0; 
 		int bestVec1 = 0; 
@@ -134,6 +108,70 @@ public class CrossRouting implements Routing {
 				
 			}
 		}	
+		
+		if (bestFound > 0) {
+			vehicleList.set(bestVec1, bestRoute1);
+			vehicleList.set(bestVec2, bestRoute2);
+		}
+		else {
+			done = true; 
+		}
+		
+		return vehicleList; 
+	}
+	
+	public List<List<RoutingElement>> crossExchangeNeighbourhoodSearch(List<List<RoutingElement>> vehicleList) {
+		int bestFound = 0; 
+		int bestVec1 = 0; 
+		int bestVec2 = 0; 
+		List<RoutingElement> bestRoute1 = new ArrayList<>(); 
+		List<RoutingElement> bestRoute2 = new ArrayList<>(); 
+		
+		for (int vec1 = 0; vec1 < vehicleList.size(); vec1++) {					// for all pairs 
+			for (int vec2 = vec1+1; vec2 < vehicleList.size(); vec2++) {        // of vehicles 
+				List<RoutingElement> vehicle1 = vehicleList.get(vec1); 
+				List<RoutingElement> vehicle2 = vehicleList.get(vec2); 
+				int cost = getCost(vehicleList.get(vec1)) + getCost(vehicleList.get(vec2)); 
+
+				
+				for (int x1 = 0; x1 < vehicle1.size()-1; x1++) {
+					int x1p = x1 + 1; 
+					for (int x2 = 0; x2 < vehicle2.size()-1; x2++) {
+						int x2p = x2 + 1; 
+						for (int y1 = x1; y1 < vehicle1.size(); y1++) {
+							int y1p = y1 + 1; 
+							for (int y2 = x2; y2 < vehicle2.size(); y2++) {
+								int y2p = y2 + 1; 
+								
+								List<RoutingElement> route1 = new ArrayList<>();
+								List<RoutingElement> route2 = new ArrayList<>(); 
+								
+								// perform cross-exchange 
+								route1.addAll(vehicle1.subList(0, x1p));
+								route1.addAll(vehicle2.subList(x2p, y2p)); 
+								route1.addAll(vehicle1.subList(y1p,vehicle1.size()));
+								
+								route2.addAll(vehicle2.subList(0, x2p));
+								route2.addAll(vehicle1.subList(x1p, y1p)); 
+								route2.addAll(vehicle2.subList(y2p,vehicle2.size()));
+																
+								int newCost = getCost(route1) + getCost(route2);
+								if (feasibleChange(route1, route2) && (cost-newCost > bestFound) ) { 
+									bestFound = cost - newCost; 
+									bestVec1 = vec1; 
+									bestVec2 = vec2; 
+									bestRoute1 = route1; 
+									bestRoute2 = route2; 
+
+								}
+								
+							}
+						}
+					}
+				}
+				
+			}
+		}
 		
 		if (bestFound > 0) {
 			vehicleList.set(bestVec1, bestRoute1);
