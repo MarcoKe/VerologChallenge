@@ -24,6 +24,8 @@ public class PlacementReader {
 	}
 	
 	public List<List<RoutingElement>> readFile(String filename) { 
+		filename = filename.split("\\.")[0] + ".txt.plc";
+		System.out.println("asdasd " + filename);
 		List<List<RoutingElement>> solution = new ArrayList<>();
 		
 		File f = new File(filename);
@@ -48,7 +50,7 @@ public class PlacementReader {
 			String name = reader.readLine().substring(NAME_VAR.length());
 			// ----------------------------------------
 			
-			for (int day = 1; day <= days; day++) {
+			for (int day = 1; day < days; day++) {
 				List<RoutingElement> dayList = new ArrayList<>(); 
 				
 				reader.readLine(); // blank
@@ -122,16 +124,5 @@ public class PlacementReader {
 		}
 		
 		return manCon;
-	}
-	
-	public static void main(String[] args) { 
-		Reader r = new Reader();		
-		DataController data = r.readFile("data/ORTEC_Test/ORTEC_Test_01.txt");
-		String filename = "data/ORTEC_Test/ORTEC_Test_01.plc.txt";
-		PlacementReader reader = new PlacementReader(data); 
-		List<List<RoutingElement>> solution = reader.readFile(filename);
-		
-		PlacementWriter writer = new PlacementWriter();
-		writer.write(data, solution);
-	}
+	}	
 }

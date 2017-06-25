@@ -42,7 +42,7 @@ public class PlacementWriter {
 	}
 	
 	public void write(DataController data, List<List<VehicleAction>> simpleLocations, List<List<MandatoryConnection>> connectedLocations){
-		String fileName = data.getGlobal().getFileName().split("\\.")[0] + ".plc.txt";
+		String fileName = data.getGlobal().getFileName().split("\\.")[0] + ".txt.plc";
 		BufferedWriter bw = null;	
 		try {
 			bw = new BufferedWriter(new FileWriter(fileName));
