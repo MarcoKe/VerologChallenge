@@ -2,11 +2,13 @@ package util;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import data.DataController;
 import data.Location;
+import data.Vehicle;
 import data.VehicleAction;
 import data.VehicleAction.Action;
 import data.VehicleInformation;
@@ -45,7 +47,67 @@ public class RoutingUtil {
 		}
 		return ret;
 	}
+	
+	
+	public static VehicleInformation localSearchPermutate(DataController data, final VehicleInformation vehicInfo, int searchDepth){
+		List<VehicleAction> input = new LinkedList<>();
+		List<VehicleAction> prefix = new LinkedList<>();
+		List<VehicleAction>	 sufix = new LinkedList<>();
+		for(int i=0; i< vehicInfo.getRoute().size();++i){
+			if(i < searchDepth){
+				input.add(vehicInfo.getRoute().get(i));
+			}else {
+				sufix.add(vehicInfo.getRoute().get(i));
+			}
+		}
+		
+		LocalSearchBestSoFar currBest = new LocalSearchBestSoFar(null, Long.MAX_VALUE);
+		while(!sufix.isEmpty()){
+			int from = prefix.size();
+			int to = from+ input.size()-1;
+			
+			LocalSearchBestSoFar tmp = localSearchPermRec(data,input, new LinkedList<>(), prefix, sufix);
+			if(tmp.cost < currBest.cost){
+				currBest = tmp;
+			}
+			prefix.add(input.get(0));
+			input.remove(0);
 
+			input.add(sufix.get(0));
+			sufix.remove(0);
+		}
+		
+		return currBest.ret;
+	}
+
+	private static LocalSearchBestSoFar localSearchPermRec(DataController data, List<VehicleAction> input, List<VehicleAction> permRoute, List<VehicleAction> prefixRoute, List<VehicleAction> sufixRoute){
+		if(input.isEmpty()){
+			LocalSearchBestSoFar ret = new LocalSearchBestSoFar(null, Long.MAX_VALUE);
+			List<VehicleAction> route = new LinkedList<>(prefixRoute);
+			route.addAll(permRoute);
+			route.addAll(sufixRoute);
+			VehicleInformation retVehicInfo = new VehicleInformation(route);
+			if(isRoutePossible(data, retVehicInfo)){
+				ret = new LocalSearchBestSoFar(retVehicInfo, RoutingUtil.getVehicleInformationCost(data, retVehicInfo));
+			}
+			return ret;
+		}
+		
+		LocalSearchBestSoFar currBest = new LocalSearchBestSoFar(null, Long.MAX_VALUE);
+		for(int i = 0; i < input.size(); ++i){
+			List<VehicleAction> copyIn = new LinkedList<>(input);
+			permRoute.add(copyIn.get(i));
+			copyIn.remove(i);
+			LocalSearchBestSoFar tmp = localSearchPermRec(data,copyIn, permRoute, prefixRoute, sufixRoute);
+			if(tmp.cost < currBest.cost){
+				currBest = tmp;
+			}			
+			permRoute.remove(permRoute.size()-1);
+		}
+		return currBest;
+	}
+
+	
 	public static RouteStatistics getRouteStatistics(DataController data, VehicleInformation vehicInfo){
 		// toolcapacity the vehicle has because of pickups
 		Map<Integer, Integer> pickupCapacity = new HashMap<>();
@@ -56,8 +118,7 @@ public class RoutingUtil {
 		int travelDistance = 0;
 		//roundtripIndex {from, to}
 		int rtIdx[] = {0,0};
-		
-				
+						
 		for(int i = 0; i< vehicInfo.getRoute().size();++i){
 			VehicleAction action = vehicInfo.getRoute().get(i);
 			int toolId = -1;
@@ -160,5 +221,15 @@ public class RoutingUtil {
 			ret = false;
 		}
 		return ret;
+	}
+
+
+	static class LocalSearchBestSoFar{
+		private VehicleInformation ret;
+		private long cost;
+		public LocalSearchBestSoFar(VehicleInformation ret, long cost) {
+			this.ret = ret;
+			this.cost = cost;
+		}
 	}
 }
