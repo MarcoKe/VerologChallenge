@@ -49,7 +49,7 @@ public class PlacementReader {
 			String name = reader.readLine().substring(NAME_VAR.length());
 			// ----------------------------------------
 			
-			for (int day = 1; day < days; day++) {
+			for (int day = 1; day <= days; day++) {
 				List<RoutingElement> dayList = new ArrayList<>(); 
 				
 				reader.readLine(); // blank
