@@ -25,7 +25,6 @@ public class PlacementReader {
 	
 	public List<List<RoutingElement>> readFile(String filename) { 
 		filename = filename.split("\\.")[0] + ".txt.plc";
-		System.out.println("asdasd " + filename);
 		List<List<RoutingElement>> solution = new ArrayList<>();
 		
 		File f = new File(filename);
