@@ -11,7 +11,7 @@ import data.VehicleAction.Action;
 import data.VehicleInformation;
 import util.RoutingUtil;
 
-public class CrossExchangeRouting implements Routing {
+public class CrossRouting implements Routing {
 	private static final int ITER_LIMIT = 1000; 
 	private DataController data; 
 	private RouteAnalyser routeAnalyser; 
@@ -19,7 +19,7 @@ public class CrossExchangeRouting implements Routing {
 	private boolean done; 	
 	private int[] maxTools; 	
 	
-	public CrossExchangeRouting(Routing baseRouting) {
+	public CrossRouting(Routing baseRouting) {
 		this.baseRouting = baseRouting; 
 	}
 
@@ -39,8 +39,10 @@ public class CrossExchangeRouting implements Routing {
 	
 	@Override
 	public List<VehicleInformation> getRouting(DataController data, List<RoutingElement> dataSet) {
+		List<RoutingElement> dataSetCopy = new ArrayList<>(dataSet);
 		List<VehicleInformation> r = baseRouting.getRouting(data, dataSet); 
 		List<List<RoutingElement>> initial = new ArrayList<>(); 
+//		List<List<RoutingElement>> manCon = vehicInfo2RoutingEl(dataSetCopy, r); 
 		
 		for (VehicleInformation vehicle : r) {
 			List<RoutingElement> v = new ArrayList<>(); 
@@ -53,7 +55,33 @@ public class CrossExchangeRouting implements Routing {
 		
 		return route(data, initial);		
 	}
+	
+	public List<List<RoutingElement>> vehicInfo2RoutingEl(List<RoutingElement> original, List<VehicleInformation> vehicInfos) {
+		List<List<RoutingElement>> solution = new ArrayList<>(); 
 		
+		for (VehicleInformation v : vehicInfos) {
+			List<RoutingElement> newV = findMandatoryConnections(original, v); 
+			solution.add(newV); 
+		}
+				
+		return solution; 
+	}
+	
+	public List<RoutingElement> findMandatoryConnections(List<RoutingElement> original, VehicleInformation routed) {
+		List<RoutingElement> manConList = new ArrayList<>(); 
+				
+		for (VehicleAction el : routed.getRoute()) {
+			for (RoutingElement orgEl : original) {
+				if (orgEl.getRouteElement().get(0) == el) {
+					manConList.add(orgEl); 
+					break;
+				}				
+			}
+		}
+		
+		return manConList; 		
+	}
+	
 	public List<VehicleInformation> route(DataController data, List<List<RoutingElement>> initial) {
 		this.data = data; 
 		routeAnalyser = new RouteAnalyser(data); 
@@ -135,6 +163,7 @@ public class CrossExchangeRouting implements Routing {
 		
 		return out; 
 	}
+	
 	
 	public List<List<RoutingElement>> cleanDepots(List<List<RoutingElement>> solution) {
 		for (List<RoutingElement> vehicle : solution) {
