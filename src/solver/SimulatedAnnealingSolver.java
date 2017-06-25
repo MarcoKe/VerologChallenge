@@ -313,9 +313,10 @@ public class SimulatedAnnealingSolver implements Solver {
 			
 		}
 		
-		PlacementWriter pwriter = new PlacementWriter(); 
-		pwriter.write(data, simpleConnectionList, mandatoryConnectionList);
+//		PlacementWriter pwriter = new PlacementWriter(); 
+//		pwriter.write(data, simpleConnectionList, mandatoryConnectionList);
 		return new StrategyController(newDays);
+//		return initial;
 		
 	}
 	
